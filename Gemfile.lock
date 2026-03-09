@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     ruby-jira (0.1.0)
-      httparty
+      httparty (~> 0.24)
 
 GEM
   remote: https://rubygems.org/
@@ -160,6 +160,7 @@ GEM
 PLATFORMS
   arm64-darwin-24
   ruby
+  x86_64-linux
 
 DEPENDENCIES
   flay
