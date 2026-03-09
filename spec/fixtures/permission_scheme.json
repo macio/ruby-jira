@@ -1,0 +1,30 @@
+{
+    "id": 10000,
+    "self": "https://api.example.com/rest/api/3/permissionscheme/10000",
+    "name": "Default Permission Scheme",
+    "description": "This is the default permission scheme.",
+    "permissions": [
+        {
+            "id": 10080,
+            "self": "https://api.example.com/rest/api/3/permissionscheme/permission/10080",
+            "holder": {
+                "type": "applicationRole",
+                "parameter": "jira-software",
+                "value": "jira-software",
+                "expand": "group"
+            },
+            "permission": "BROWSE_PROJECTS"
+        },
+        {
+            "id": 10081,
+            "self": "https://api.example.com/rest/api/3/permissionscheme/permission/10081",
+            "holder": {
+                "type": "projectRole",
+                "parameter": "10360",
+                "value": "10360",
+                "expand": "group"
+            },
+            "permission": "CREATE_ISSUES"
+        }
+    ]
+}

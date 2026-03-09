@@ -1,0 +1,67 @@
+{
+    "expand": "description,lead,issueTypes,url,projectKeys,permissions,insight",
+    "self": "https://api.example.com/rest/api/3/project/10000",
+    "id": "10000",
+    "key": "TEST",
+    "description": "",
+    "lead": {
+        "self": "https://api.example.com/rest/api/3/user?accountId=000000:000000-000",
+        "accountId": "000000:000000-000",
+        "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/00000000000000000000000000000001?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FTU-2.png",
+            "24x24": "https://secure.gravatar.com/avatar/00000000000000000000000000000001?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FTU-2.png",
+            "16x16": "https://secure.gravatar.com/avatar/00000000000000000000000000000001?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FTU-2.png",
+            "32x32": "https://secure.gravatar.com/avatar/00000000000000000000000000000001?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FTU-2.png"
+        },
+        "displayName": "Test User",
+        "active": true
+    },
+    "components": [],
+    "issueTypes": [
+        {
+            "self": "https://api.example.com/rest/api/3/issuetype/1",
+            "id": "1",
+            "description": "A task",
+            "iconUrl": "https://api.example.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10001?size=medium",
+            "name": "Task",
+            "subtask": false,
+            "avatarId": 10001,
+            "hierarchyLevel": 0
+        },
+        {
+            "self": "https://api.example.com/rest/api/3/issuetype/2",
+            "id": "2",
+            "description": "A bug",
+            "iconUrl": "https://api.example.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10002?size=medium",
+            "name": "Bug",
+            "subtask": false,
+            "avatarId": 10002,
+            "hierarchyLevel": 0
+        },
+        {
+            "self": "https://api.example.com/rest/api/3/issuetype/3",
+            "id": "3",
+            "description": "An epic",
+            "iconUrl": "https://api.example.com/rest/api/2/universal_avatar/view/type/issuetype/avatar/10003?size=medium",
+            "name": "Epic",
+            "subtask": false,
+            "avatarId": 10003,
+            "hierarchyLevel": 1
+        }
+    ],
+    "assigneeType": "UNASSIGNED",
+    "versions": [],
+    "name": "Test Project",
+    "roles": {},
+    "avatarUrls": {
+        "48x48": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001",
+        "24x24": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001?size=small",
+        "16x16": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001?size=xsmall",
+        "32x32": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001?size=medium"
+    },
+    "projectTypeKey": "software",
+    "simplified": false,
+    "style": "classic",
+    "isPrivate": false,
+    "properties": {}
+}

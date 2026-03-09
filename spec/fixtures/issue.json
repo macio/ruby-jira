@@ -1,0 +1,6 @@
+{
+    "expand": "renderedFields,names,schema,operations,editmeta,changelog,versionedRepresentations,customfield_18214.requestTypePractice,customfield_18243.properties",
+    "id": "100011",
+    "self": "https://api.example.com/rest/api/3/issue/100011",
+    "key": "TEST-11"
+}

@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "jira"
+
+# Pre-configure from environment variables (same as examples/basic_usage.rb).
+# Set JIRA_ENDPOINT, JIRA_EMAIL, JIRA_API_TOKEN (basic auth)
+# or JIRA_AUTH_TYPE=oauth2, JIRA_CLOUD_ID, JIRA_OAUTH_ACCESS_TOKEN (OAuth2).
+Jira.reset if ENV["JIRA_ENDPOINT"]
+
+require "pry"
+Pry.start

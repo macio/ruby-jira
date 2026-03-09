@@ -1,0 +1,42 @@
+{
+    "self": "https://api.example.com/rest/api/3/project/search?startAt=0&maxResults=50",
+    "nextPage": "https://api.example.com/rest/api/3/project/search?startAt=50&maxResults=50",
+    "maxResults": 50,
+    "startAt": 0,
+    "total": 2,
+    "isLast": false,
+    "values": [
+        {
+            "self": "https://api.example.com/rest/api/3/project/10000",
+            "id": "10000",
+            "key": "TEST",
+            "name": "Test Project",
+            "projectTypeKey": "software",
+            "simplified": false,
+            "style": "classic",
+            "isPrivate": false,
+            "avatarUrls": {
+                "48x48": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001",
+                "24x24": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001?size=small",
+                "16x16": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001?size=xsmall",
+                "32x32": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10001?size=medium"
+            }
+        },
+        {
+            "self": "https://api.example.com/rest/api/3/project/10001",
+            "id": "10001",
+            "key": "DEMO",
+            "name": "Demo Project",
+            "projectTypeKey": "software",
+            "simplified": true,
+            "style": "next-gen",
+            "isPrivate": false,
+            "avatarUrls": {
+                "48x48": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10002",
+                "24x24": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10002?size=small",
+                "16x16": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10002?size=xsmall",
+                "32x32": "https://api.example.com/rest/api/3/universal_avatar/view/type/project/avatar/10002?size=medium"
+            }
+        }
+    ]
+}

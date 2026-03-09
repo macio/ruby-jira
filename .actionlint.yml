@@ -1,0 +1,4 @@
+# GEM_HOST_API_KEY is a RubyGems environment variable, not a GitHub Actions context.
+# actionlint does not know about it and reports a false positive.
+ignore:
+  - "context access might be invalid: RUBYGEMS_API_KEY"

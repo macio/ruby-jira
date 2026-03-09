@@ -1,0 +1,6 @@
+{
+    "id": 101,
+    "self": "https://api.example.com/rest/api/3/permissionscheme/101",
+    "name": "Custom Permission Scheme",
+    "description": "Custom permission scheme assigned to the project."
+}
