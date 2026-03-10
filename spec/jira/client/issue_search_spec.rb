@@ -44,7 +44,7 @@ RSpec.describe Jira::Client do
       expect(a_get("/search")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
       expect(result.total).to eq(1)
-      expect(result.first[:key]).to eq("ED-1")
+      expect(result.first[:id]).to eq("10002")
     end
 
     it "passes query options" do
@@ -73,7 +73,7 @@ RSpec.describe Jira::Client do
       expect(a_post("/search")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
       expect(result.total).to eq(1)
-      expect(result.first[:key]).to eq("ED-1")
+      expect(result.first[:id]).to eq("10002")
     end
   end
 
@@ -97,7 +97,7 @@ RSpec.describe Jira::Client do
       expect(a_get("/search/jql")).to have_been_made
       expect(result).to be_a(Jira::CursorPaginatedResponse)
       expect(result.next_page?).to be(false)
-      expect(result.first[:key]).to eq("ED-1")
+      expect(result.first[:id]).to eq("10002")
     end
 
     it "passes query options" do
@@ -126,7 +126,7 @@ RSpec.describe Jira::Client do
       expect(a_post("/search/jql")).to have_been_made
       expect(result).to be_a(Jira::CursorPaginatedResponse)
       expect(result.next_page?).to be(false)
-      expect(result.first[:key]).to eq("ED-1")
+      expect(result.first[:id]).to eq("10002")
     end
   end
 end
