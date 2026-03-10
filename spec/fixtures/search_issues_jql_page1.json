@@ -1,0 +1,13 @@
+{
+  "isLast": false,
+  "nextPageToken": "token-123",
+  "issues": [
+    {
+      "expand": "",
+      "fields": {},
+      "id": "10001",
+      "key": "ED-1",
+      "self": "https://your-domain.atlassian.net/rest/api/3/issue/10001"
+    }
+  ]
+}

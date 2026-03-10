@@ -36,15 +36,15 @@ RSpec.describe Jira::Client do
   end
 
   describe ".search_issues" do
-    it "returns issues matching a JQL query", :aggregate_failures do
+    it "returns issues as a PaginatedResponse", :aggregate_failures do
       stub_get("/search", "search_issues")
 
       result = Jira.search_issues
 
       expect(a_get("/search")).to have_been_made
-      expect(result[:total]).to eq(1)
-      expect(result[:issues]).to be_an(Array)
-      expect(result[:issues].first[:key]).to eq("ED-1")
+      expect(result).to be_a(Jira::PaginatedResponse)
+      expect(result.total).to eq(1)
+      expect(result.first[:key]).to eq("ED-1")
     end
 
     it "passes query options" do
@@ -53,17 +53,27 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/search?maxResults=10")).to have_been_made
     end
+
+    it "supports auto_paginate" do
+      stub_get("/search", "search_issues")
+
+      all = Jira.search_issues.auto_paginate
+
+      expect(all).to be_an(Array)
+      expect(all.first[:key]).to eq("ED-1")
+    end
   end
 
   describe ".search_issues_post" do
-    it "returns issues matching a JQL query via POST", :aggregate_failures do
+    it "returns issues as a PaginatedResponse", :aggregate_failures do
       stub_post("/search", "search_issues")
 
       result = Jira.search_issues_post(jql: "project = EX", maxResults: 50)
 
       expect(a_post("/search")).to have_been_made
-      expect(result[:total]).to eq(1)
-      expect(result[:issues].first[:key]).to eq("ED-1")
+      expect(result).to be_a(Jira::PaginatedResponse)
+      expect(result.total).to eq(1)
+      expect(result.first[:key]).to eq("ED-1")
     end
   end
 
@@ -79,15 +89,15 @@ RSpec.describe Jira::Client do
   end
 
   describe ".search_issues_jql" do
-    it "returns issues using JQL with reconciliation", :aggregate_failures do
+    it "returns issues as a CursorPaginatedResponse", :aggregate_failures do
       stub_get("/search/jql", "search_issues_jql")
 
       result = Jira.search_issues_jql
 
       expect(a_get("/search/jql")).to have_been_made
-      expect(result[:isLast]).to be(true)
-      expect(result[:issues]).to be_an(Array)
-      expect(result[:issues].first[:key]).to eq("ED-1")
+      expect(result).to be_a(Jira::CursorPaginatedResponse)
+      expect(result.next_page?).to be(false)
+      expect(result.first[:key]).to eq("ED-1")
     end
 
     it "passes query options" do
@@ -96,17 +106,27 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/search/jql?maxResults=10")).to have_been_made
     end
+
+    it "supports auto_paginate across pages", :aggregate_failures do
+      stub_get("/search/jql", "search_issues_jql_page1")
+      stub_get("/search/jql?nextPageToken=token-123", "search_issues_jql")
+
+      all = Jira.search_issues_jql.auto_paginate
+
+      expect(all.length).to eq(2)
+    end
   end
 
   describe ".search_issues_jql_post" do
-    it "returns issues using JQL via POST", :aggregate_failures do
+    it "returns issues as a CursorPaginatedResponse", :aggregate_failures do
       stub_post("/search/jql", "search_issues_jql")
 
       result = Jira.search_issues_jql_post(jql: "project = EX")
 
       expect(a_post("/search/jql")).to have_been_made
-      expect(result[:isLast]).to be(true)
-      expect(result[:issues].first[:key]).to eq("ED-1")
+      expect(result).to be_a(Jira::CursorPaginatedResponse)
+      expect(result.next_page?).to be(false)
+      expect(result.first[:key]).to eq("ED-1")
     end
   end
 end

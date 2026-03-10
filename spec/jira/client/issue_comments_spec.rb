@@ -26,15 +26,15 @@ RSpec.describe Jira::Client do
   end
 
   describe ".issue_comments" do
-    it "returns comments for an issue", :aggregate_failures do
+    it "returns comments as a PaginatedResponse", :aggregate_failures do
       stub_get("/issue/ED-1/comment", "issue_comments")
 
       result = Jira.issue_comments("ED-1")
 
       expect(a_get("/issue/ED-1/comment")).to have_been_made
-      expect(result[:total]).to eq(1)
-      expect(result[:comments]).to be_an(Array)
-      expect(result[:comments].first[:id]).to eq("10000")
+      expect(result).to be_a(Jira::PaginatedResponse)
+      expect(result.total).to eq(1)
+      expect(result.first[:id]).to eq("10000")
     end
 
     it "passes query options" do
@@ -42,6 +42,15 @@ RSpec.describe Jira::Client do
       Jira.issue_comments("ED-1", orderBy: "created")
 
       expect(a_get("/issue/ED-1/comment?orderBy=created")).to have_been_made
+    end
+
+    it "supports auto_paginate" do
+      stub_get("/issue/ED-1/comment", "issue_comments")
+
+      all = Jira.issue_comments("ED-1").auto_paginate
+
+      expect(all).to be_an(Array)
+      expect(all.first[:id]).to eq("10000")
     end
   end
 
