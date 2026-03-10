@@ -2,6 +2,9 @@
 
 # Run this script to exercise the gem against a real Jira Cloud instance.
 #
+# Enable debug logging (shows all requests, responses, rate-limit retries):
+#   JIRA_DEBUG=1 bundle exec ruby examples/basic_usage.rb
+#
 # Basic auth:
 #   JIRA_ENDPOINT=https://your-domain.atlassian.net \
 #   JIRA_EMAIL=you@example.com \
@@ -39,6 +42,7 @@
 #   bundle exec ruby examples/basic_usage.rb
 
 require "bundler/setup"
+require "logger"
 require_relative "../lib/jira"
 require "pp"
 
@@ -68,6 +72,8 @@ Jira.configure do |config|
   else
     raise ArgumentError, "Unsupported JIRA_AUTH_TYPE: #{AUTH_TYPE}"
   end
+
+  config.logger = Logger.new($stdout).tap { |l| l.level = Logger::DEBUG } if ENV["JIRA_DEBUG"] == "1"
 end
 
 def section(title)

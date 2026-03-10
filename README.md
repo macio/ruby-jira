@@ -217,6 +217,30 @@ Jira.configure do |config|
 end
 ```
 
+### Logging
+
+Pass any `Logger`-compatible object to enable debug logging. All requests, detected response types, and rate-limit retries are logged at `DEBUG` level.
+
+```ruby
+require "logger"
+
+Jira.configure do |config|
+  config.logger = Logger.new($stdout)
+end
+```
+
+Sample output:
+
+```
+GET /project/search {query: {maxResults: 50}}
+→ Jira::PaginatedResponse
+GET /search/jql {query: {jql: "project=TEST", nextPageToken: "..."}}
+→ Jira::CursorPaginatedResponse
+rate limited (HTTP 429), retrying in 5.0s (3 retries left)
+```
+
+Logging is disabled by default (`config.logger = nil`).
+
 ### Proxy
 
 ```ruby
@@ -241,6 +265,7 @@ Jira.http_proxy("proxy.example.com", 8080, "user", "pass")
 | `ratelimit_retries`    | `JIRA_RATELIMIT_RETRIES`    | `4`                                      |
 | `ratelimit_base_delay` | `JIRA_RATELIMIT_BASE_DELAY` | `2.0`                                    |
 | `ratelimit_max_delay`  | `JIRA_RATELIMIT_MAX_DELAY`  | `30.0`                                   |
+| `logger`               | —                           | `nil`                                    |
 
 ## Error handling
 
