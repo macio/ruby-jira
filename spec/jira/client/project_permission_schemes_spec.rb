@@ -65,4 +65,17 @@ RSpec.describe Jira::Client do
       ).to have_been_made
     end
   end
+
+  describe ".project_security_levels" do
+    it "returns security levels for a project", :aggregate_failures do
+      stub_get("/project/TEST/securitylevel", "project_security_levels")
+
+      result = Jira.project_security_levels("TEST")
+
+      expect(a_get("/project/TEST/securitylevel")).to have_been_made
+      expect(result[:levels]).to be_an(Array)
+      expect(result[:levels].length).to eq(2)
+      expect(result[:levels].first[:name]).to eq("Reporter Only")
+    end
+  end
 end
