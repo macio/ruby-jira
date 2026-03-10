@@ -1,0 +1,18 @@
+{
+  "expand": "names,schema",
+  "issues": [
+    {
+      "expand": "",
+      "fields": {},
+      "id": "10002",
+      "key": "ED-1",
+      "self": "https://your-domain.atlassian.net/rest/api/3/issue/10002"
+    }
+  ],
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 1,
+  "warningMessages": [
+    "The value 'bar' does not exist for the field 'foo'."
+  ]
+}
