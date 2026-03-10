@@ -12,7 +12,9 @@ module Jira
   # Pagination is driven by a +next_page_fetcher+ proc set by the Request layer,
   # which re-issues the original request with +nextPageToken+ injected.
   class CursorPaginatedResponse
-    METADATA_KEYS = %i[nextPageToken total self].freeze
+    include Logging
+
+    METADATA_KEYS = %i[nextPageToken total self isLast expand warningMessages maxResults startAt].freeze
 
     attr_accessor :client, :next_page_fetcher
     attr_reader :next_page_token, :total
@@ -21,7 +23,9 @@ module Jira
       @body = body
       @next_page_token = body[:nextPageToken]
       @total = body.fetch(:total, 0).to_i
-      @array = wrap_items(detect_items_array(body))
+      items_key, items = detect_items_array(body)
+      log "CursorPaginatedResponse: items_key=#{items_key.inspect} count=#{items.length}"
+      @array = wrap_items(items)
     end
 
     def inspect
@@ -80,9 +84,9 @@ module Jira
     def detect_items_array(body)
       body.each do |key, value|
         next if METADATA_KEYS.include?(key)
-        return value if value.is_a?(Array)
+        return [key, value] if value.is_a?(Array)
       end
-      []
+      [nil, []]
     end
 
     def wrap_items(items)

@@ -15,6 +15,8 @@ module Jira
   # When nextPage URL is absent, a next_page_fetcher proc set by the Request layer
   # drives pagination by incrementing startAt.
   class PaginatedResponse
+    include Logging
+
     METADATA_KEYS = %i[
       isLast maxResults nextPage self startAt total pageSize nextPageToken expand warningMessages
     ].freeze
@@ -24,7 +26,8 @@ module Jira
 
     def initialize(body) # rubocop:disable Metrics/AbcSize
       @body = body
-      items = detect_items(body)
+      items_key, items = detect_items(body)
+      log "PaginatedResponse: items_key=#{items_key.inspect} count=#{items.length}"
       @array = wrap_items(items)
       @is_last = body.key?(:isLast) ? body[:isLast] : (@array.length + body.fetch(:startAt, 0) >= body.fetch(:total, 0))
       @max_results = (body[:maxResults] || body[:pageSize] || items.length).to_i
@@ -103,10 +106,10 @@ module Jira
     private
 
     def detect_items(body)
-      return body[:values] if body.key?(:values)
+      return [:values, body[:values]] if body.key?(:values)
 
-      body.each { |k, v| return v if !METADATA_KEYS.include?(k) && v.is_a?(Array) }
-      []
+      body.each { |k, v| return [k, v] if !METADATA_KEYS.include?(k) && v.is_a?(Array) }
+      [nil, []]
     end
 
     def wrap_items(items)

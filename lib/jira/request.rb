@@ -6,6 +6,7 @@ require "json"
 require "time"
 require "uri"
 
+require_relative "logging"
 require_relative "request/authentication"
 require_relative "request/rate_limiting"
 require_relative "request/request_building"
@@ -15,6 +16,7 @@ module Jira
   # @private
   class Request
     include HTTParty
+    include Logging
 
     OAUTH_MISSING_CREDENTIALS_MESSAGE = Authenticator::OAUTH_MISSING_CREDENTIALS_MESSAGE
 
@@ -79,7 +81,9 @@ module Jira
     def execute_request(method, path, options)
       params = params_builder.build(options)
       retries_left = retries_left_for(params)
+      log "#{method.upcase} #{path} #{options.inspect}"
       result = perform_request_with_retry(method, path, params, retries_left)
+      log "→ #{result.class}"
       setup_cursor_fetcher!(result, method, path, options) if result.is_a?(CursorPaginatedResponse)
       setup_offset_fetcher!(result, method, path, options) if result.is_a?(PaginatedResponse)
       result
@@ -91,6 +95,8 @@ module Jira
     rescue Jira::Error::TooManyRequests, Jira::Error::ServiceUnavailable => e
       raise e unless should_retry?(e, method, response, retries_left)
 
+      wait = retry_policy.wait_seconds(response: response, retries_left: retries_left - 1)
+      log "rate limited (HTTP #{response.code}), retrying in #{wait.round(1)}s (#{retries_left - 1} retries left)"
       retry_policy.sleep_before_retry(response: response, retries_left: retries_left - 1)
       retries_left -= 1
       retry

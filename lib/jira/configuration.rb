@@ -21,6 +21,7 @@ module Jira
       ratelimit_retries
       ratelimit_base_delay
       ratelimit_max_delay
+      logger
     ].freeze
 
     DEFAULT_USER_AGENT = "Ruby Jira Gem #{Jira::VERSION}".freeze
@@ -63,6 +64,7 @@ module Jira
       self.ratelimit_max_delay = float_env("JIRA_RATELIMIT_MAX_DELAY", DEFAULT_RATELIMIT_MAX_DELAY)
       self.httparty = get_httparty_config(ENV.fetch("JIRA_HTTPARTY_OPTIONS", nil))
       self.user_agent = DEFAULT_USER_AGENT
+      self.logger = nil
     end
 
     private

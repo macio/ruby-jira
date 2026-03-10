@@ -232,6 +232,7 @@ RSpec.describe Jira::Request do
     before do
       request.instance_variable_set(:@retry_policy, sleeping_policy)
       allow(sleeping_policy).to receive(:retryable?).and_return(true, true, false)
+      allow(sleeping_policy).to receive(:wait_seconds).and_return(0)
       allow(sleeping_policy).to receive(:sleep_before_retry)
     end
 
@@ -287,8 +288,8 @@ RSpec.describe Jira::Request do
       allow(spy_policy).to receive(:retryable?) do |**kwargs|
         real_policy.retryable?(**kwargs)
       end
-      allow(spy_policy).to receive(:sleep_before_retry) do |**kwargs|
-        real_policy.sleep_before_retry(**kwargs)
+      allow(spy_policy).to receive(:wait_seconds) do |**kwargs|
+        real_policy.wait_seconds(**kwargs)
       end
 
       slept_values = []
@@ -315,6 +316,9 @@ RSpec.describe Jira::Request do
       slept_values = []
       allow(spy_policy).to receive(:retryable?) do |**kwargs|
         real_policy.retryable?(**kwargs)
+      end
+      allow(spy_policy).to receive(:wait_seconds) do |**kwargs|
+        real_policy.wait_seconds(**kwargs)
       end
       allow(spy_policy).to receive(:sleep_before_retry) do |response:, retries_left:|
         slept_values << real_policy.wait_seconds(response: response, retries_left: retries_left)
