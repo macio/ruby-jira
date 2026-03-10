@@ -1,21 +1,15 @@
 {
-    "id": 10001,
-    "self": "https://api.example.com/rest/api/3/issuesecurityschemes/10001",
-    "name": "Default Issue Security Scheme",
-    "description": "Description for the default issue security scheme.",
-    "defaultSecurityLevelId": 10021,
-    "levels": [
-        {
-            "self": "https://api.example.com/rest/api/3/securitylevel/10021",
-            "id": "10021",
-            "description": "Visible to all project members.",
-            "name": "Public"
-        },
-        {
-            "self": "https://api.example.com/rest/api/3/securitylevel/10022",
-            "id": "10022",
-            "description": "Visible to administrators only.",
-            "name": "Private"
-        }
-    ]
+  "defaultSecurityLevelId": 10021,
+  "description": "Description for the default issue security scheme",
+  "id": 10000,
+  "levels": [
+    {
+      "description": "Only the reporter and internal staff can see this issue.",
+      "id": "10021",
+      "name": "Reporter Only",
+      "self": "https://your-domain.atlassian.net/rest/api/3/securitylevel/10021"
+    }
+  ],
+  "name": "Default Issue Security Scheme",
+  "self": "https://your-domain.atlassian.net/rest/api/3/issuesecurityschemes/10000"
 }
