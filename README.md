@@ -39,7 +39,7 @@ JIRA_EMAIL=you@example.com
 JIRA_API_TOKEN=your-api-token
 ```
 
-### OAuth 2.0 — pre-fetched access token
+### OAuth 2.0 - pre-fetched access token
 
 ```ruby
 Jira.configure do |config|
@@ -50,7 +50,7 @@ Jira.configure do |config|
 end
 ```
 
-### OAuth 2.0 — automatic token refresh (`refresh_token` grant)
+### OAuth 2.0 - automatic token refresh (`refresh_token` grant)
 
 ```ruby
 Jira.configure do |config|
@@ -64,7 +64,7 @@ Jira.configure do |config|
 end
 ```
 
-### OAuth 2.0 — service account (`client_credentials` grant)
+### OAuth 2.0 - service account (`client_credentials` grant)
 
 ```ruby
 Jira.configure do |config|
@@ -162,25 +162,25 @@ Jira.assign_permission_scheme("TEST", scheme_id: 101)
 
 ### Pagination
 
-Offset-paginated responses (`GET /project/search`, `GET /workflow/search`, etc.) return `Jira::PaginatedResponse`:
+Offset-paginated responses return `Jira::PaginatedResponse` - includes `GET /project/search`, `GET /search`, `GET /issue/{key}/comment`, `GET /issue/{key}/worklog`, and others:
 
 ```ruby
 page = Jira.projects
-page.total        # total count
-page.start_at     # current offset
-page.max_results  # page size
-page.last_page?   # isLast flag
+page.total          # total count
+page.start_at       # current offset
+page.max_results    # page size
+page.last_page?     # isLast flag
 page.next_page?
-page.next_page    # fetches the next page
-page.auto_paginate                # fetches all pages, returns flat Array
+page.next_page      # fetches the next page
+page.auto_paginate  # fetches all pages, returns flat Array
 page.paginate_with_limit(200)
 page.each_page { |p| process(p) }
 ```
 
-Cursor-paginated responses (`POST /search/jql`, etc.) return `Jira::CursorPaginatedResponse`:
+Cursor-paginated responses (`GET /search/jql`, `POST /search/jql`) return `Jira::CursorPaginatedResponse`:
 
 ```ruby
-results = Jira.search_issues(jql: "project = TEST ORDER BY created DESC")
+results = Jira.search_issues_jql(jql: "project = TEST ORDER BY created DESC")
 results.next_page_token   # raw token
 results.next_page?
 results.next_page         # fetches next page automatically
@@ -202,7 +202,7 @@ The client automatically retries `429 Too Many Requests` and `503 Service Unavai
 | `X-RateLimit-Reset`     | ISO 8601 timestamp | When the rate-limit window resets (429 only)                                   |
 | `X-RateLimit-Limit`     | integer            | Max request rate for the current scope                                         |
 | `X-RateLimit-Remaining` | integer            | Remaining capacity in the current window                                       |
-| `X-RateLimit-NearLimit` | `"true"`           | Signals < 20% capacity remains — consider throttling proactively               |
+| `X-RateLimit-NearLimit` | `"true"`           | Signals < 20% capacity remains - consider throttling proactively               |
 | `RateLimit-Reason`      | string             | Which limit was exceeded (`jira-burst-based`, `jira-quota-tenant-based`, etc.) |
 
 **Retry strategy:** exponential backoff with proportional jitter (`delay × rand(0.7..1.3)`), respecting `Retry-After` and `X-RateLimit-Reset` headers. Falls back to backoff when no header is present.
@@ -245,12 +245,12 @@ Jira.http_proxy("proxy.example.com", 8080, "user", "pass")
 ## Error handling
 
 ```ruby
-rescue Jira::Error::Unauthorized   # 401
-rescue Jira::Error::Forbidden      # 403
-rescue Jira::Error::NotFound       # 404
+rescue Jira::Error::Unauthorized    # 401
+rescue Jira::Error::Forbidden       # 403
+rescue Jira::Error::NotFound        # 404
 rescue Jira::Error::TooManyRequests # 429
-rescue Jira::Error::ResponseError  # any other 4xx/5xx
-rescue Jira::Error::Base           # all gem errors
+rescue Jira::Error::ResponseError   # any other 4xx/5xx
+rescue Jira::Error::Base            # all gem errors
 ```
 
 `Jira::Error::ResponseError` exposes:
