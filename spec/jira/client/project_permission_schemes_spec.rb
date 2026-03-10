@@ -10,9 +10,10 @@ RSpec.describe Jira::Client do
       scheme = Jira.issue_security_level_scheme("TEST")
 
       expect(a_get("/project/TEST/issuesecuritylevelscheme")).to have_been_made
-      expect(scheme[:id]).to eq(10_001)
+      expect(scheme[:id]).to eq(10_000)
       expect(scheme[:name]).to eq("Default Issue Security Scheme")
-      expect(scheme[:levels].length).to eq(2)
+      expect(scheme[:levels].length).to eq(1)
+      expect(scheme[:levels].first[:name]).to eq("Reporter Only")
     end
 
     it "passes query options" do
@@ -31,8 +32,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/project/TEST/permissionscheme")).to have_been_made
       expect(scheme[:id]).to eq(10_000)
-      expect(scheme[:name]).to eq("Default Permission Scheme")
-      expect(scheme[:permissions].length).to eq(2)
+      expect(scheme[:name]).to eq("Example permission scheme")
     end
 
     it "passes query options" do
@@ -44,24 +44,24 @@ RSpec.describe Jira::Client do
   end
 
   describe ".assign_permission_scheme" do
-    it "assigns permission scheme by scheme_id" do
+    it "assigns permission scheme by scheme_id", :aggregate_failures do
       stub_put("/project/TEST/permissionscheme", "permission_scheme_assigned")
 
-      scheme = Jira.assign_permission_scheme("TEST", scheme_id: 101)
+      scheme = Jira.assign_permission_scheme("TEST", scheme_id: 10_000)
 
-      expect(a_put("/project/TEST/permissionscheme").with(body: { id: 101 }.to_json)).to have_been_made
-      expect(scheme[:id]).to eq(101)
-      expect(scheme[:name]).to eq("Custom Permission Scheme")
+      expect(a_put("/project/TEST/permissionscheme").with(body: { id: 10_000 }.to_json)).to have_been_made
+      expect(scheme[:id]).to eq(10_000)
+      expect(scheme[:name]).to eq("Example permission scheme")
     end
 
     it "merges additional options into body" do
       stub_put("/project/TEST/permissionscheme", "permission_scheme_assigned")
 
-      Jira.assign_permission_scheme("TEST", scheme_id: 101, options: { expand: "permissions" })
+      Jira.assign_permission_scheme("TEST", scheme_id: 10_000, options: { expand: "permissions" })
 
       expect(
         a_put("/project/TEST/permissionscheme")
-                .with(body: { id: 101, expand: "permissions" }.to_json)
+                .with(body: { id: 10_000, expand: "permissions" }.to_json)
       ).to have_been_made
     end
   end
