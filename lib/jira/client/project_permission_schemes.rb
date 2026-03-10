@@ -28,6 +28,16 @@ module Jira
         get("/project/#{url_encode(project_key_or_id)}/permissionscheme", query: options)
       end
 
+      # Returns security levels for a project
+      #
+      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-permission-schemes/#api-rest-api-3-project-projectkeyorid-securitylevel-get
+      #
+      # @param project_key_or_id [Integer, String] Project ID or key
+      # @return [Hash]
+      def project_security_levels(project_key_or_id)
+        get("/project/#{url_encode(project_key_or_id)}/securitylevel")
+      end
+
       # Assigns permission scheme to a project
       #
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-permission-schemes/#api-rest-api-3-project-projectkeyorid-permissionscheme-put

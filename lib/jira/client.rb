@@ -4,6 +4,7 @@ module Jira
   class Client < API
     Dir[File.expand_path("client/*.rb", __dir__)].each { |file| require file }
 
+    include IssueComments
     include Issues
     include ProjectPermissionSchemes
     include Projects
