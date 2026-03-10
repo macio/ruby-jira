@@ -6,8 +6,8 @@ module Jira
       class << self
         def parse(body) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
           decoded = decode(body)
-          return PaginatedResponse.new(decoded) if offset_paginated?(decoded)
           return CursorPaginatedResponse.new(decoded) if cursor_paginated?(decoded)
+          return PaginatedResponse.new(decoded) if offset_paginated?(decoded)
           return ObjectifiedHash.new(decoded) if decoded.is_a?(Hash)
           return decoded.map { |item| item.is_a?(Hash) ? ObjectifiedHash.new(item) : item } if decoded.is_a?(Array)
           return true if decoded
@@ -27,17 +27,25 @@ module Jira
         private
 
         # Offset-based pagination: GET /project/search, GET /workflow/search, etc.
-        # Requires :values and at least one offset-pagination hint.
-        def offset_paginated?(body)
-          body.is_a?(Hash) &&
-            body.key?(:values) &&
-            (body.key?(:isLast) || body.key?(:nextPage) || body.key?(:startAt))
+        # Classic format: :values array + pagination hints.
+        # Legacy format: :startAt without :isLast or :nextPageToken (e.g. GET /search, GET /issue/{key}/comment).
+        def offset_paginated?(body) # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+          return false unless body.is_a?(Hash)
+          return false if body.key?(:nextPageToken)
+
+          return true if body.key?(:values) && (body.key?(:isLast) || body.key?(:nextPage) || body.key?(:startAt))
+
+          body.key?(:startAt) && !body.key?(:isLast) && body.values.any?(Array)
         end
 
-        # Cursor-based pagination: POST /search/jql, etc.
-        # The token drives the next request; items live under a variable key.
+        # Cursor-based pagination: POST /search/jql, GET /search/jql, etc.
+        # Matches when :nextPageToken is present (any page), or when :isLast is present
+        # without :values (last page of cursor response has no token).
         def cursor_paginated?(body)
-          body.is_a?(Hash) && body.key?(:nextPageToken)
+          body.is_a?(Hash) && (
+            body.key?(:nextPageToken) ||
+            (body.key?(:isLast) && !body.key?(:values) && body.values.any?(Array))
+          )
         end
       end
     end

@@ -81,6 +81,7 @@ module Jira
       retries_left = retries_left_for(params)
       result = perform_request_with_retry(method, path, params, retries_left)
       setup_cursor_fetcher!(result, method, path, options) if result.is_a?(CursorPaginatedResponse)
+      setup_offset_fetcher!(result, method, path, options) if result.is_a?(PaginatedResponse)
       result
     end
 
@@ -93,6 +94,14 @@ module Jira
       retry_policy.sleep_before_retry(response: response, retries_left: retries_left - 1)
       retries_left -= 1
       retry
+    end
+
+    def setup_offset_fetcher!(result, method, path, options)
+      result.next_page_fetcher = lambda do |start_at|
+        merged = options.dup
+        merged[:query] = (merged.fetch(:query, nil) || {}).merge(startAt: start_at)
+        send(method, path, merged)
+      end
     end
 
     def setup_cursor_fetcher!(result, method, path, options)

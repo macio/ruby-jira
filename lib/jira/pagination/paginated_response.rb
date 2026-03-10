@@ -3,19 +3,31 @@
 require "uri"
 
 module Jira
-  # Wrapper for Jira offset-paginated responses (values/isLast style).
+  # Wrapper for Jira offset-paginated responses.
   #
-  # Endpoints like GET /project/search and GET /workflow/search return a body of:
-  #   { values: [...], isLast: bool, total: int, nextPage: url, startAt: int, maxResults: int }
+  # Supports two formats:
+  # - Classic: { values: [...], isLast: bool, nextPage: url, startAt: int, maxResults: int, total: int }
+  #   (GET /project/search, GET /issue/{key}/changelog, POST /comment/list)
+  # - Legacy: { <items_key>: [...], startAt: int, maxResults: int, total: int }
+  #   (GET /search, GET /issue/{key}/comment)
+  #
+  # For legacy format, items key is auto-detected (first non-metadata Array value).
+  # When nextPage URL is absent, a next_page_fetcher proc set by the Request layer
+  # drives pagination by incrementing startAt.
   class PaginatedResponse
-    attr_accessor :client
+    METADATA_KEYS = %i[
+      isLast maxResults nextPage self startAt total pageSize nextPageToken expand warningMessages
+    ].freeze
+
+    attr_accessor :client, :next_page_fetcher
     attr_reader :total, :max_results, :start_at, :self_url
 
-    def initialize(body)
+    def initialize(body) # rubocop:disable Metrics/AbcSize
       @body = body
-      @array = wrap_items(body.fetch(:values, []))
-      @is_last = body.fetch(:isLast, false)
-      @max_results = body.fetch(:maxResults, 0).to_i
+      items = detect_items(body)
+      @array = wrap_items(items)
+      @is_last = body.key?(:isLast) ? body[:isLast] : (@array.length + body.fetch(:startAt, 0) >= body.fetch(:total, 0))
+      @max_results = (body[:maxResults] || body[:pageSize] || items.length).to_i
       @next_page = body.fetch(:nextPage, "")
       @self_url = body.fetch(:self, "")
       @start_at = body.fetch(:startAt, 0).to_i
@@ -72,14 +84,15 @@ module Jira
     alias has_first_page? first_page?
 
     def next_page?
-      @is_last == false && !@next_page.to_s.empty?
+      !last_page? && (!@next_page.to_s.empty? || !@next_page_fetcher.nil?)
     end
     alias has_next_page? next_page?
 
     def next_page
-      return nil unless has_next_page?
+      return nil unless next_page?
+      return @client.get(client_relative_path(@next_page)) unless @next_page.to_s.empty?
 
-      @client.get(client_relative_path(@next_page))
+      @next_page_fetcher.call(@start_at + @max_results)
     end
 
     def client_relative_path(link)
@@ -88,6 +101,13 @@ module Jira
     end
 
     private
+
+    def detect_items(body)
+      return body[:values] if body.key?(:values)
+
+      body.each { |k, v| return v if !METADATA_KEYS.include?(k) && v.is_a?(Array) }
+      []
+    end
 
     def wrap_items(items)
       items.map { |item| item.is_a?(Hash) ? ObjectifiedHash.new(item) : item }
