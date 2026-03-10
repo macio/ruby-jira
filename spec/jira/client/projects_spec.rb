@@ -11,28 +11,29 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/project/search?status=live")).to have_been_made
       expect(projects).to be_a(Jira::PaginatedResponse)
-      expect(projects.total).to eq(2)
-      expect(projects.first[:key]).to eq("TEST")
-      expect(projects.last[:key]).to eq("DEMO")
+      expect(projects.total).to eq(7)
+      expect(projects.first[:key]).to eq("EX")
+      expect(projects.last[:key]).to eq("ABC")
       expect(projects.next_page?).to be(true)
     end
   end
 
   describe ".project" do
-    it "gets a single project" do
-      stub_get("/project/TEST", "project")
-      project = Jira.project("TEST")
+    it "gets a single project", :aggregate_failures do
+      stub_get("/project/EX", "project")
+      project = Jira.project("EX")
 
-      expect(a_get("/project/TEST")).to have_been_made
-      expect(project[:key]).to eq("TEST")
-      expect(project.dig(:lead, :displayName)).to eq("Test User")
+      expect(a_get("/project/EX")).to have_been_made
+      expect(project[:key]).to eq("EX")
+      expect(project[:name]).to eq("Example")
+      expect(project.dig(:lead, :displayName)).to eq("Mia Krystof")
     end
 
     it "passes query options" do
-      stub_get("/project/TEST?expand=description", "project")
-      Jira.project("TEST", expand: "description")
+      stub_get("/project/EX?expand=description", "project")
+      Jira.project("EX", expand: "description")
 
-      expect(a_get("/project/TEST?expand=description")).to have_been_made
+      expect(a_get("/project/EX?expand=description")).to have_been_made
     end
   end
 
@@ -48,13 +49,14 @@ RSpec.describe Jira::Client do
 
   describe ".update_project" do
     it "updates a project", :aggregate_failures do
-      stub_put("/project/TEST", "project")
+      stub_put("/project/EX", "project")
 
-      project = Jira.update_project("TEST", name: "New Name")
+      project = Jira.update_project("EX", name: "New Name")
 
-      expect(a_put("/project/TEST")).to have_been_made
-      expect(project[:key]).to eq("TEST")
-      expect(project.dig(:lead, :displayName)).to eq("Test User")
+      expect(a_put("/project/EX")).to have_been_made
+      expect(project[:key]).to eq("EX")
+      expect(project[:name]).to eq("Example")
+      expect(project.dig(:lead, :displayName)).to eq("Mia Krystof")
     end
   end
 

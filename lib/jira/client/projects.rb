@@ -27,7 +27,7 @@ module Jira
 
       # Archives a project
       #
-      # https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-archive-post
+      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/#api-rest-api-3-project-projectidorkey-archive-post
       #
       # @param project_id_or_key [Integer, String] Project ID or key
       # @return [Hash]
