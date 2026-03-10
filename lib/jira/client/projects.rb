@@ -3,6 +3,8 @@
 module Jira
   class Client
     # Defines methods related to projects.
+    #
+    # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-projects/
     module Projects
       # Search projects
       #

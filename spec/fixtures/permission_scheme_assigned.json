@@ -1,6 +1,19 @@
 {
-    "id": 101,
-    "self": "https://api.example.com/rest/api/3/permissionscheme/101",
-    "name": "Custom Permission Scheme",
-    "description": "Custom permission scheme assigned to the project."
+  "description": "description",
+  "id": 10000,
+  "name": "Example permission scheme",
+  "permissions": [
+    {
+      "holder": {
+        "expand": "group",
+        "parameter": "jira-core-users",
+        "type": "group",
+        "value": "ca85fac0-d974-40ca-a615-7af99c48d24f"
+      },
+      "id": 10000,
+      "permission": "ADMINISTER_PROJECTS",
+      "self": "https://your-domain.atlassian.net/rest/api/3/permissionscheme/permission/10000"
+    }
+  ],
+  "self": "https://your-domain.atlassian.net/rest/api/3/permissionscheme/10000"
 }

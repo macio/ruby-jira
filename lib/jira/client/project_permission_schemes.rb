@@ -3,8 +3,12 @@
 module Jira
   class Client
     # Defines methods related to project permission schemes.
+    #
+    # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-permission-schemes/
     module ProjectPermissionSchemes
       # Gets assigned issue security level scheme for a project
+      #
+      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-permission-schemes/#api-rest-api-3-project-projectkeyorid-issuesecuritylevelscheme-get
       #
       # @param project_key_or_id [Integer, String] Project ID or key
       # @param options [Hash] Query parameters
@@ -15,6 +19,8 @@ module Jira
 
       # Gets assigned permission scheme for a project
       #
+      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-permission-schemes/#api-rest-api-3-project-projectkeyorid-permissionscheme-get
+      #
       # @param project_key_or_id [Integer, String] Project ID or key
       # @param options [Hash] Query parameters
       # @return [Hash]
@@ -23,6 +29,8 @@ module Jira
       end
 
       # Assigns permission scheme to a project
+      #
+      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-project-permission-schemes/#api-rest-api-3-project-projectkeyorid-permissionscheme-put
       #
       # @param project_key_or_id [Integer, String] Project ID or key
       # @param scheme_id [Integer] Permission scheme ID
