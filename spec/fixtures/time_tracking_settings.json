@@ -1,0 +1,6 @@
+{
+  "defaultUnit": "hour",
+  "timeFormat": "pretty",
+  "workingDaysPerWeek": 5.5,
+  "workingHoursPerDay": 7.6
+}

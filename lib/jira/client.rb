@@ -11,6 +11,7 @@ module Jira
     include ProjectPermissionSchemes
     include ProjectProperties
     include Projects
+    include TimeTracking
 
     # Text representation of the client, masking auth secrets.
     #
