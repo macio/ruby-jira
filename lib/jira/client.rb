@@ -7,6 +7,7 @@ module Jira
     include IssueComments
     include IssueSearch
     include Issues
+    include IssueWorklogs
     include ProjectCategories
     include ProjectPermissionSchemes
     include ProjectProperties

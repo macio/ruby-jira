@@ -207,63 +207,6 @@ RSpec.describe Jira::Client do
     end
   end
 
-  describe ".issue_worklogs" do
-    it "returns worklogs as a PaginatedResponse", :aggregate_failures do
-      stub_get("/issue/ED-1/worklog", "issue_worklogs")
-
-      result = Jira.issue_worklogs("ED-1")
-
-      expect(a_get("/issue/ED-1/worklog")).to have_been_made
-      expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.total).to eq(1)
-      expect(result.first[:id]).to eq("100028")
-    end
-  end
-
-  describe ".add_worklog" do
-    it "adds a worklog to an issue", :aggregate_failures do
-      stub_post("/issue/ED-1/worklog", "issue_worklog")
-
-      worklog = Jira.add_worklog("ED-1", timeSpentSeconds: 3600)
-
-      expect(a_post("/issue/ED-1/worklog")).to have_been_made
-      expect(worklog[:id]).to eq("100028")
-    end
-  end
-
-  describe ".worklog" do
-    it "returns a single worklog", :aggregate_failures do
-      stub_get("/issue/ED-1/worklog/100028", "issue_worklog")
-
-      worklog = Jira.worklog("ED-1", 100_028)
-
-      expect(a_get("/issue/ED-1/worklog/100028")).to have_been_made
-      expect(worklog[:id]).to eq("100028")
-      expect(worklog.dig(:author, :displayName)).to eq("Mia Krystof")
-    end
-  end
-
-  describe ".update_worklog" do
-    it "updates a worklog on an issue", :aggregate_failures do
-      stub_put("/issue/ED-1/worklog/100028", "issue_worklog")
-
-      worklog = Jira.update_worklog("ED-1", 100_028, timeSpentSeconds: 7200)
-
-      expect(a_put("/issue/ED-1/worklog/100028")).to have_been_made
-      expect(worklog[:id]).to eq("100028")
-    end
-  end
-
-  describe ".delete_worklog" do
-    it "deletes a worklog from an issue" do
-      stub_delete("/issue/ED-1/worklog/100028", "empty")
-
-      Jira.delete_worklog("ED-1", 100_028)
-
-      expect(a_delete("/issue/ED-1/worklog/100028")).to have_been_made
-    end
-  end
-
   describe ".issue_remote_links" do
     it "returns remote links for an issue", :aggregate_failures do
       stub_get("/issue/ED-1/remotelink", "issue_remote_links")
