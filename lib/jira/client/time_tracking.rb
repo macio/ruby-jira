@@ -6,7 +6,7 @@ module Jira
     #
     # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-time-tracking/
     module TimeTracking
-      # Returns the selected time tracking provider
+      # Returns the time tracking provider that is currently selected
       #
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-time-tracking/#api-rest-api-3-configuration-timetracking-get
       #
@@ -25,7 +25,7 @@ module Jira
         put("/configuration/timetracking", body: payload)
       end
 
-      # Returns all available time tracking providers
+      # Returns all time tracking providers
       #
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-time-tracking/#api-rest-api-3-configuration-timetracking-list-get
       #
@@ -34,7 +34,7 @@ module Jira
         get("/configuration/timetracking/list")
       end
 
-      # Returns the shared time tracking settings
+      # Returns the time tracking settings
       #
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-time-tracking/#api-rest-api-3-configuration-timetracking-options-get
       #
@@ -43,11 +43,11 @@ module Jira
         get("/configuration/timetracking/options")
       end
 
-      # Sets the shared time tracking settings
+      # Sets the time tracking settings
       #
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-time-tracking/#api-rest-api-3-configuration-timetracking-options-put
       #
-      # @param payload [Hash] Time tracking configuration payload
+      # @param payload [Hash] Time tracking settings payload
       # @return [Hash]
       def set_time_tracking_settings(payload = {})
         put("/configuration/timetracking/options", body: payload)
