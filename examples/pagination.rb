@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# Demonstrates both pagination models: offset (PaginatedResponse) and cursor (CursorPaginatedResponse).
+# Demonstrates unified pagination helpers across Jira pagination models:
+# offset (PaginatedResponse) and cursor (CursorPaginatedResponse).
 #
 # Basic auth:
 #   JIRA_ENDPOINT=https://your-domain.atlassian.net \
@@ -59,7 +60,7 @@ JQL = ENV.fetch("JIRA_JQL", "project=TEST ORDER BY created DESC")
 
 # =============================================================================
 # Offset pagination — Jira::PaginatedResponse
-# Returned by: GET /project/search, GET /search, GET /issue/{key}/comment, etc.
+# Returned by: GET /project/search, GET /issue/{key}/comment, GET /issue/{key}/worklog, etc.
 # =============================================================================
 
 section "Offset pagination: auto_paginate with block"
@@ -106,4 +107,9 @@ puts "Fetched #{all.length} issues"
 section "Cursor pagination: each_page"
 Jira.search_issues_jql(jql: JQL, maxResults: 20).each_page do |page|
   puts "  token=#{page.next_page_token.inspect}, count=#{page.length}, last=#{!page.next_page?}"
+end
+
+section "Cursor pagination: paginate_with_limit(3)"
+Jira.search_issues_jql(jql: JQL, maxResults: 20).paginate_with_limit(3).each do |issue|
+  puts "  id=#{issue[:id]}"
 end

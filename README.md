@@ -162,7 +162,11 @@ Jira.assign_permission_scheme("TEST", scheme_id: 101)
 
 ### Pagination
 
-Offset-paginated responses return `Jira::PaginatedResponse` - includes `GET /project/search`, `GET /search`, `GET /issue/{key}/comment`, `GET /issue/{key}/worklog`, and others:
+Jira Cloud uses multiple pagination shapes across endpoints. This gem unifies them with `auto_paginate`, `each_page`,
+and `paginate_with_limit`.
+
+Offset-paginated responses return `Jira::PaginatedResponse` - includes `GET /project/search`, `GET /issue/{key}/comment`,
+`GET /issue/{key}/worklog`, and others:
 
 ```ruby
 page = Jira.projects
@@ -180,11 +184,17 @@ page.each_page { |p| process(p) }
 Cursor-paginated responses (`GET /search/jql`, `POST /search/jql`) return `Jira::CursorPaginatedResponse`:
 
 ```ruby
-results = Jira.search_issues_jql(jql: "project = TEST ORDER BY created DESC")
+# GET /search/jql returns minimal issue payload by default (id only).
+# Pass fields/expand to fetch richer issue data.
+results = Jira.search_issues_jql(
+  jql: "project = TEST ORDER BY created DESC",
+  fields: "key,summary"
+)
 results.next_page_token   # raw token
 results.next_page?
 results.next_page         # fetches next page automatically
 results.auto_paginate     # fetches all pages
+results.paginate_with_limit(200)
 ```
 
 ### Rate limiting
