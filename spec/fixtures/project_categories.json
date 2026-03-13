@@ -1,0 +1,14 @@
+[
+  {
+    "description": "First Project Category",
+    "id": "10000",
+    "name": "FIRST",
+    "self": "https://your-domain.atlassian.net/rest/api/3/projectCategory/10000"
+  },
+  {
+    "description": "Second Project Category",
+    "id": "10001",
+    "name": "SECOND",
+    "self": "https://your-domain.atlassian.net/rest/api/3/projectCategory/10001"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "description": "First Project Category",
+  "id": "10000",
+  "name": "FIRST",
+  "self": "https://your-domain.atlassian.net/rest/api/3/projectCategory/10000"
+}
