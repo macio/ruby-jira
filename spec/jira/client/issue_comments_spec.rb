@@ -56,12 +56,19 @@ RSpec.describe Jira::Client do
 
   describe ".add_comment" do
     it "adds a comment to an issue", :aggregate_failures do
+      payload = { body: { type: "doc", version: 1, content: [] } }
       stub_post("/issue/ED-1/comment", "issue_comment")
 
-      comment = Jira.add_comment("ED-1", body: { type: "doc", version: 1, content: [] })
+      comment = Jira.add_comment("ED-1", payload)
 
-      expect(a_post("/issue/ED-1/comment")).to have_been_made
+      expect(a_post("/issue/ED-1/comment").with(body: payload.to_json)).to have_been_made
       expect(comment[:id]).to eq("10000")
+    end
+
+    it "passes query options" do
+      stub_post("/issue/ED-1/comment?expand=renderedBody", "issue_comment")
+      Jira.add_comment("ED-1", {}, expand: "renderedBody")
+      expect(a_post("/issue/ED-1/comment?expand=renderedBody")).to have_been_made
     end
   end
 
@@ -79,12 +86,19 @@ RSpec.describe Jira::Client do
 
   describe ".update_comment" do
     it "updates a comment on an issue", :aggregate_failures do
+      payload = { body: { type: "doc", version: 1, content: [] } }
       stub_put("/issue/ED-1/comment/10000", "issue_comment")
 
-      comment = Jira.update_comment("ED-1", 10_000, body: { type: "doc", version: 1, content: [] })
+      comment = Jira.update_comment("ED-1", 10_000, payload)
 
-      expect(a_put("/issue/ED-1/comment/10000")).to have_been_made
+      expect(a_put("/issue/ED-1/comment/10000").with(body: payload.to_json)).to have_been_made
       expect(comment[:id]).to eq("10000")
+    end
+
+    it "passes query options" do
+      stub_put("/issue/ED-1/comment/10000?expand=renderedBody", "issue_comment")
+      Jira.update_comment("ED-1", 10_000, {}, expand: "renderedBody")
+      expect(a_put("/issue/ED-1/comment/10000?expand=renderedBody")).to have_been_made
     end
   end
 
