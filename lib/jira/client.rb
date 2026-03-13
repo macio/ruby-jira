@@ -7,7 +7,9 @@ module Jira
     include IssueComments
     include IssueSearch
     include Issues
+    include ProjectCategories
     include ProjectPermissionSchemes
+    include ProjectProperties
     include Projects
 
     # Text representation of the client, masking auth secrets.
