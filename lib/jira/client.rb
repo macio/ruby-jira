@@ -5,6 +5,7 @@ module Jira
     Dir[File.expand_path("client/*.rb", __dir__)].each { |file| require file }
 
     include IssueComments
+    include IssueSearch
     include Issues
     include ProjectPermissionSchemes
     include Projects
