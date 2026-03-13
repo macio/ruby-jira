@@ -144,6 +144,13 @@ RSpec.describe Jira::PaginatedResponse do
       all = first_page.auto_paginate
       expect(all.map { |i| i[:key] }).to eq(%w[ED-1 ED-2])
     end
+
+    it "raises when fetcher returns a page without progress" do
+      first_page.next_page_fetcher = ->(_start_at) { first_page }
+
+      expect { first_page.auto_paginate }
+        .to raise_error(Jira::Error::Pagination, /did not advance/)
+    end
   end
 
   describe "#client_relative_path" do

@@ -225,6 +225,49 @@ RSpec.describe Jira::Request do
     end
   end
 
+  describe "pagination fetchers" do
+    let(:search_path) { "https://jira.atlassian.net/rest/api/3/search" }
+    let(:search_jql_path) { "https://jira.atlassian.net/rest/api/3/search/jql" }
+    let(:offset_first_page) do
+      { startAt: 0, maxResults: 1, total: 2, issues: [{ id: "10001", key: "ED-1", fields: {} }] }
+    end
+    let(:offset_second_page) do
+      { startAt: 1, maxResults: 1, total: 2, issues: [{ id: "10002", key: "ED-2", fields: {} }] }
+    end
+    let(:cursor_first_page) { { nextPageToken: "token-123", isLast: false, issues: [{ id: "10001" }] } }
+    let(:cursor_second_page) { { isLast: true, issues: [{ id: "10002" }] } }
+
+    it "continues offset pagination for POST by injecting startAt into body", :aggregate_failures do
+      stub_request(:post, search_path)
+        .with { |request_body| JSON.parse(request_body.body).fetch("startAt", nil).nil? }
+        .to_return(status: 200, body: JSON.generate(offset_first_page))
+      stub_request(:post, search_path)
+        .with { |request_body| JSON.parse(request_body.body).fetch("startAt", nil) == 1 }
+        .to_return(status: 200, body: JSON.generate(offset_second_page))
+
+      result = request.post("/search", body: { jql: "project = EX", maxResults: 1 })
+      all = result.auto_paginate
+
+      expect(all.map { |issue| issue[:key] }).to eq(%w[ED-1 ED-2])
+      expect(a_request(:post, search_path)).to have_been_made.twice
+    end
+
+    it "continues cursor pagination for POST by injecting nextPageToken into body", :aggregate_failures do
+      stub_request(:post, search_jql_path)
+        .with { |request_body| JSON.parse(request_body.body).fetch("nextPageToken", nil).nil? }
+        .to_return(status: 200, body: JSON.generate(cursor_first_page))
+      stub_request(:post, search_jql_path)
+        .with { |request_body| JSON.parse(request_body.body).fetch("nextPageToken", nil) == "token-123" }
+        .to_return(status: 200, body: JSON.generate(cursor_second_page))
+
+      result = request.post("/search/jql", body: { jql: "project = EX" })
+      all = result.auto_paginate
+
+      expect(all.map { |issue| issue[:id] }).to eq(%w[10001 10002])
+      expect(a_request(:post, search_jql_path)).to have_been_made.twice
+    end
+  end
+
   describe "rate limiting" do
     let(:path) { "https://jira.atlassian.net/rest/api/3/project/TEST" }
     let(:sleeping_policy) { instance_double(Jira::Request::RetryPolicy) }

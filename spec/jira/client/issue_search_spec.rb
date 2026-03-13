@@ -35,48 +35,6 @@ RSpec.describe Jira::Client do
     end
   end
 
-  describe ".search_issues" do
-    it "returns issues as a PaginatedResponse", :aggregate_failures do
-      stub_get("/search", "search_issues")
-
-      result = Jira.search_issues
-
-      expect(a_get("/search")).to have_been_made
-      expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.total).to eq(1)
-      expect(result.first[:id]).to eq("10002")
-    end
-
-    it "passes query options" do
-      stub_get("/search?maxResults=10", "search_issues")
-      Jira.search_issues(maxResults: 10)
-
-      expect(a_get("/search?maxResults=10")).to have_been_made
-    end
-
-    it "supports auto_paginate" do
-      stub_get("/search", "search_issues")
-
-      all = Jira.search_issues.auto_paginate
-
-      expect(all).to be_an(Array)
-      expect(all.first[:key]).to eq("ED-1")
-    end
-  end
-
-  describe ".search_issues_post" do
-    it "returns issues as a PaginatedResponse", :aggregate_failures do
-      stub_post("/search", "search_issues")
-
-      result = Jira.search_issues_post(jql: "project = EX", maxResults: 50)
-
-      expect(a_post("/search")).to have_been_made
-      expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.total).to eq(1)
-      expect(result.first[:id]).to eq("10002")
-    end
-  end
-
   describe ".approximate_issue_count" do
     it "returns an approximate count of matching issues", :aggregate_failures do
       stub_post("/search/approximate-count", "approximate_issue_count")
@@ -127,6 +85,37 @@ RSpec.describe Jira::Client do
       expect(result).to be_a(Jira::CursorPaginatedResponse)
       expect(result.next_page?).to be(false)
       expect(result.first[:id]).to eq("10002")
+    end
+
+    it "supports auto_paginate across pages", :aggregate_failures do
+      path = "#{Jira.endpoint}/rest/api/3/search/jql"
+      stub_request(:post, path)
+        .with do |request|
+          JSON.parse(request.body).fetch("nextPageToken", nil).nil?
+        end
+        .to_return(body: load_fixture("search_issues_jql_page1"), status: 200)
+      stub_request(:post, path)
+        .with do |request|
+          JSON.parse(request.body).fetch("nextPageToken", nil) == "token-123"
+        end
+        .to_return(body: load_fixture("search_issues_jql"), status: 200)
+
+      all = Jira.search_issues_jql_post(jql: "project = EX").auto_paginate
+
+      expect(all.length).to eq(2)
+      expect(a_post("/search/jql")).to have_been_made.twice
+    end
+  end
+
+  describe "removed deprecated search endpoints" do
+    it "does not expose search_issues" do
+      expect(Jira.respond_to?(:search_issues)).to be(false)
+      expect { Jira.search_issues }.to raise_error(NoMethodError)
+    end
+
+    it "does not expose search_issues_post" do
+      expect(Jira.respond_to?(:search_issues_post)).to be(false)
+      expect { Jira.search_issues_post(jql: "project = EX") }.to raise_error(NoMethodError)
     end
   end
 end
