@@ -9,7 +9,7 @@ brew install git-cliff
 
 **Add RubyGems API key to GitHub Secrets:**
 1. Go to https://rubygems.org/profile/api_keys and create a key with `push` scope
-2. **Important:** set MFA level to **`UI and gem signin`** (not `UI and API`) — otherwise CI will fail asking for an OTP code
+2. **Important:** set MFA level to **`UI and gem signin`** (not `UI and API`) - otherwise CI will fail asking for an OTP code
 3. In your GitHub repository: Settings → Secrets and variables → Actions → New secret
 4. Name: `RUBYGEMS_API_KEY`, value: the key from step 1
 
@@ -46,7 +46,7 @@ require_relative "lib/jira/version"
 spec.version = Jira::VERSION
 ```
 
-You never edit the version in the gemspec directly — only in `lib/jira/version.rb`.
+You never edit the version in the gemspec directly - only in `lib/jira/version.rb`.
 
 ## Releasing a new version
 
@@ -74,7 +74,7 @@ git cliff --tag v0.2.0 --output CHANGELOG.md
 git add lib/jira/version.rb CHANGELOG.md
 git commit -m "chore: release v0.2.0"
 
-# 6. Create a version tag and push — the tag triggers the release workflow
+# 6. Create a version tag and push - the tag triggers the release workflow
 git tag v0.2.0
 git push origin main --follow-tags
 ```
@@ -90,6 +90,6 @@ Once the tag is pushed, the GitHub Actions release workflow (`.github/workflows/
 
 This project follows [Semantic Versioning](https://semver.org/):
 
-- **patch** `x.y.Z` — backwards-compatible bug fixes
-- **minor** `x.Y.0` — new backwards-compatible functionality
-- **major** `X.0.0` — incompatible API changes
+- **patch** `x.y.Z` - backwards-compatible bug fixes
+- **minor** `x.Y.0` - new backwards-compatible functionality
+- **major** `X.0.0` - incompatible API changes

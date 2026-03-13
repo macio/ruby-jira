@@ -2,8 +2,10 @@
 
 require_relative "jira/version"
 require_relative "jira/configuration"
+require_relative "jira/logging"
 require_relative "jira/error"
 require_relative "jira/objectified_hash"
+require_relative "jira/pagination/collection_behavior"
 require_relative "jira/pagination/paginated_response"
 require_relative "jira/pagination/cursor_paginated_response"
 require_relative "jira/request"

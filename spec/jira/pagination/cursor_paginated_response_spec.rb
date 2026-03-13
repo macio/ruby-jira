@@ -85,12 +85,39 @@ RSpec.describe Jira::CursorPaginatedResponse do
       expect(all.length).to eq(3)
       expect(all.last.key).to eq("TEST-3")
     end
+
+    it "raises when cursor does not advance" do
+      repeated_page = described_class.new({ nextPageToken: "token-abc", issues: [{ id: "3", key: "TEST-3" }] })
+      response.next_page_fetcher = ->(_token) { repeated_page }
+
+      expect { response.auto_paginate }
+        .to raise_error(Jira::Error::Pagination, /did not advance/)
+    end
   end
 
   describe "body with no array field" do
     it "defaults items to empty array" do
       r = described_class.new({ nextPageToken: "x", total: 0 })
       expect(r.to_ary).to eq([])
+    end
+  end
+
+  describe "url-based cursor pagination" do
+    it "uses client with nextPage URL" do
+      page = described_class.new(
+        {
+          lastPage: false,
+          nextPage: "https://jira.atlassian.net/rest/api/3/worklog/deleted?since=10",
+          values:   [{ id: "1" }]
+        }
+      )
+      next_page = described_class.new({ lastPage: true, values: [] })
+      client = instance_double(Jira::Request, api_request_path: "/rest/api/3")
+      page.client = client
+      allow(client).to receive(:get).and_return(next_page)
+
+      expect(page.next_page).to eq(next_page)
+      expect(client).to have_received(:get).with("/worklog/deleted?since=10")
     end
   end
 end

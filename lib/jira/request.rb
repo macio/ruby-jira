@@ -6,6 +6,7 @@ require "json"
 require "time"
 require "uri"
 
+require_relative "logging"
 require_relative "request/authentication"
 require_relative "request/rate_limiting"
 require_relative "request/request_building"
@@ -15,6 +16,7 @@ module Jira
   # @private
   class Request
     include HTTParty
+    include Logging
 
     OAUTH_MISSING_CREDENTIALS_MESSAGE = Authenticator::OAUTH_MISSING_CREDENTIALS_MESSAGE
 
@@ -79,8 +81,10 @@ module Jira
     def execute_request(method, path, options)
       params = params_builder.build(options)
       retries_left = retries_left_for(params)
+      log "#{method.upcase} #{path} #{options.inspect}"
       result = perform_request_with_retry(method, path, params, retries_left)
-      setup_cursor_fetcher!(result, method, path, options) if result.is_a?(CursorPaginatedResponse)
+      log "→ #{result.class}"
+      setup_pagination_fetcher!(result, method, path, options)
       result
     end
 
@@ -90,22 +94,50 @@ module Jira
     rescue Jira::Error::TooManyRequests, Jira::Error::ServiceUnavailable => e
       raise e unless should_retry?(e, method, response, retries_left)
 
+      wait = retry_policy.wait_seconds(response: response, retries_left: retries_left - 1)
+      log "rate limited (HTTP #{response.code}), retrying in #{wait.round(1)}s (#{retries_left - 1} retries left)"
       retry_policy.sleep_before_retry(response: response, retries_left: retries_left - 1)
       retries_left -= 1
       retry
     end
 
-    def setup_cursor_fetcher!(result, method, path, options)
-      result.next_page_fetcher = lambda do |token|
-        merged = options.dup
-        if method.to_s == "get"
-          merged[:query] = (merged.fetch(:query, nil) || {}).merge(nextPageToken: token)
-        else
-          body = merged[:body].is_a?(Hash) ? merged[:body].dup : {}
-          merged[:body] = body.merge(nextPageToken: token)
-        end
+    def setup_pagination_fetcher!(result, method, path, options)
+      case result
+      when PaginatedResponse
+        setup_fetcher_for(result:, method:, path:, options:, key: :startAt)
+      when CursorPaginatedResponse
+        return unless result.fetcher_based_pagination?
+        return if result.cursor_parameter_key.nil?
+
+        setup_fetcher_for(result:, method:, path:, options:, key: result.cursor_parameter_key)
+      end
+    end
+
+    def setup_fetcher_for(result:, method:, path:, options:, key:)
+      result.next_page_fetcher = lambda do |value|
+        merged = duplicate_request_options(options)
+        inject_pagination_parameter!(options: merged, method:, key:, value:)
         send(method, path, merged)
       end
+    end
+
+    def duplicate_request_options(options)
+      duplicated = options.dup
+      duplicated[:query] = options[:query].dup if options[:query].is_a?(Hash)
+      duplicated[:body] = options[:body].dup if options[:body].is_a?(Hash)
+      duplicated
+    end
+
+    def inject_pagination_parameter!(options:, method:, key:, value:)
+      target = pagination_parameter_target(method:, options:)
+      options[target] = (options[target] || {}).merge(key => value)
+    end
+
+    def pagination_parameter_target(method:, options:)
+      return :query if method.to_s == "get"
+      return :body if options[:body].is_a?(Hash)
+
+      :query
     end
 
     def perform_request(method, path, params)
@@ -116,13 +148,9 @@ module Jira
       params.delete(:ratelimit_retries) || ratelimit_retries || Configuration::DEFAULT_RATELIMIT_RETRIES
     end
 
-    def build_url(path)
-      url_builder.build(path)
-    end
+    def build_url(path) = url_builder.build(path)
 
-    def authorization_header
-      authenticator.authorization_header
-    end
+    def authorization_header = authenticator.authorization_header
 
     def should_retry?(error, method, response, retries_left)
       retry_policy.retryable?(error: error, method: method, response: response, retries_left: retries_left)

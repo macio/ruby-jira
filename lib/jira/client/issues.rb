@@ -172,7 +172,7 @@ module Jira
       #
       # @param issue_id_or_key [Integer, String] The ID or key of an issue
       # @param options [Hash] Query parameters
-      # @return [Hash]
+      # @return [Jira::PaginatedResponse]
       def issue_worklogs(issue_id_or_key, options = {})
         get("/issue/#{url_encode(issue_id_or_key)}/worklog", query: options)
       end

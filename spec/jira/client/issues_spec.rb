@@ -208,15 +208,15 @@ RSpec.describe Jira::Client do
   end
 
   describe ".issue_worklogs" do
-    it "returns worklogs for an issue", :aggregate_failures do
+    it "returns worklogs as a PaginatedResponse", :aggregate_failures do
       stub_get("/issue/ED-1/worklog", "issue_worklogs")
 
       result = Jira.issue_worklogs("ED-1")
 
       expect(a_get("/issue/ED-1/worklog")).to have_been_made
-      expect(result[:total]).to eq(1)
-      expect(result[:worklogs]).to be_an(Array)
-      expect(result[:worklogs].first[:id]).to eq("100028")
+      expect(result).to be_a(Jira::PaginatedResponse)
+      expect(result.total).to eq(1)
+      expect(result.first[:id]).to eq("100028")
     end
   end
 

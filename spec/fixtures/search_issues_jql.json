@@ -2,11 +2,7 @@
   "isLast": true,
   "issues": [
     {
-      "expand": "",
-      "fields": {},
-      "id": "10002",
-      "key": "ED-1",
-      "self": "https://your-domain.atlassian.net/rest/api/3/issue/10002"
+      "id": "10002"
     }
   ]
 }

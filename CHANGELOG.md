@@ -10,5 +10,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add initial ruby-jira Jira API client gem ([09c7c53](https://github.com/macio/ruby-jira/commit/09c7c5302cec9ccd079d85f0c46466f53775e9da))
-
-

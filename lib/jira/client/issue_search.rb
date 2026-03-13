@@ -26,26 +26,6 @@ module Jira
         post("/jql/match", body: payload)
       end
 
-      # Searches for issues using JQL (GET)
-      #
-      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get
-      #
-      # @param options [Hash] Query parameters (e.g. jql:, startAt:, maxResults:, fields:)
-      # @return [Hash]
-      def search_issues(options = {})
-        get("/search", query: options)
-      end
-
-      # Searches for issues using JQL (POST)
-      #
-      # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-post
-      #
-      # @param payload [Hash] Search payload (e.g. jql:, startAt:, maxResults:, fields:)
-      # @return [Hash]
-      def search_issues_post(payload = {})
-        post("/search", body: payload)
-      end
-
       # Returns an approximate count of issues matching a JQL query
       #
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-approximate-count-post
@@ -61,7 +41,7 @@ module Jira
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-get
       #
       # @param options [Hash] Query parameters (e.g. jql:, nextPageToken:, maxResults:, fields:)
-      # @return [Hash]
+      # @return [Jira::CursorPaginatedResponse]
       def search_issues_jql(options = {})
         get("/search/jql", query: options)
       end
@@ -71,7 +51,7 @@ module Jira
       # @url https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-jql-post
       #
       # @param payload [Hash] Search payload (e.g. jql:, nextPageToken:, maxResults:, fields:)
-      # @return [Hash]
+      # @return [Jira::CursorPaginatedResponse]
       def search_issues_jql_post(payload = {})
         post("/search/jql", body: payload)
       end

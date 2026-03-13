@@ -8,12 +8,12 @@ module Jira
     # https://developer.atlassian.com/cloud/jira/platform/rate-limiting/
     #
     # Supported response headers (enforced by Jira Cloud):
-    #   Retry-After        — seconds to wait before retrying (429 and some 503)
-    #   X-RateLimit-Reset  — ISO 8601 timestamp when the window resets (429 only)
-    #   X-RateLimit-Limit  — max request rate for the current scope
-    #   X-RateLimit-Remaining — remaining capacity in the current window
-    #   X-RateLimit-NearLimit — "true" when < 20% capacity remains
-    #   RateLimit-Reason   — which limit was exceeded (burst/quota/per-issue)
+    #   Retry-After           - seconds to wait before retrying (429 and some 503)
+    #   X-RateLimit-Reset     - ISO 8601 timestamp when the window resets (429 only)
+    #   X-RateLimit-Limit     - max request rate for the current scope
+    #   X-RateLimit-Remaining - remaining capacity in the current window
+    #   X-RateLimit-NearLimit - "true" when < 20% capacity remains
+    #   RateLimit-Reason      - which limit was exceeded (burst/quota/per-issue)
     class RetryPolicy
       IDEMPOTENT_HTTP_METHODS = %w[get head put delete options].freeze
 

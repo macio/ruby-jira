@@ -24,6 +24,22 @@ RSpec.describe Jira::PaginatedResponse do
       expect(paginated_response.start_at).to eq(0)
       expect(paginated_response.to_ary).to eq([1, 2, 3, 4])
     end
+
+    it "detects items from non-:values key", :aggregate_failures do
+      response = described_class.new({ issues: [{ key: "ED-1" }], startAt: 0, maxResults: 50, total: 1 })
+      expect(response.first[:key]).to eq("ED-1")
+      expect(response.total).to eq(1)
+    end
+
+    it "computes isLast when not present in body", :aggregate_failures do
+      # 1 item, startAt 0, total 1 → last page
+      response = described_class.new({ issues: [1], startAt: 0, maxResults: 50, total: 1 })
+      expect(response.last_page?).to be(true)
+
+      # 1 item, startAt 0, total 2 → not last page
+      response2 = described_class.new({ issues: [1], startAt: 0, maxResults: 1, total: 2 })
+      expect(response2.last_page?).to be(false)
+    end
   end
 
   describe "array-like behavior" do
@@ -99,6 +115,41 @@ RSpec.describe Jira::PaginatedResponse do
 
     it "returns a limited array" do
       expect(first_page.paginate_with_limit(3)).to contain_exactly(1, 2, 3)
+    end
+  end
+
+  describe "fetcher-based pagination (startAt without nextPage URL)" do
+    let(:first_hash) { { issues: [{ key: "ED-1" }], startAt: 0, maxResults: 1, total: 2 } }
+    let(:second_hash) { { issues: [{ key: "ED-2" }], startAt: 1, maxResults: 1, total: 2 } }
+    let(:first_page) { described_class.new(first_hash) }
+    let(:second_page) { described_class.new(second_hash) }
+
+    before do
+      first_page.next_page_fetcher = ->(start_at) { start_at == 1 ? second_page : nil }
+    end
+
+    it "next_page? is true when not last page and fetcher is set" do
+      expect(first_page.next_page?).to be(true)
+    end
+
+    it "next_page? is false when last page" do
+      expect(second_page.next_page?).to be(false)
+    end
+
+    it "next_page calls fetcher with start_at + max_results" do
+      expect(first_page.next_page).to eq(second_page)
+    end
+
+    it "auto_paginate collects all items" do
+      all = first_page.auto_paginate
+      expect(all.map { |i| i[:key] }).to eq(%w[ED-1 ED-2])
+    end
+
+    it "raises when fetcher returns a page without progress" do
+      first_page.next_page_fetcher = ->(_start_at) { first_page }
+
+      expect { first_page.auto_paginate }
+        .to raise_error(Jira::Error::Pagination, /did not advance/)
     end
   end
 
