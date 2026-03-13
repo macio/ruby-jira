@@ -9,13 +9,14 @@ module Jira
   # - Classic: { values: [...], isLast: bool, nextPage: url, startAt: int, maxResults: int, total: int }
   #   (GET /project/search, GET /issue/{key}/changelog, POST /comment/list)
   # - Legacy: { <items_key>: [...], startAt: int, maxResults: int, total: int }
-  #   (GET /search, GET /issue/{key}/comment)
+  #   (GET /issue/{key}/comment, GET /issue/{key}/worklog)
   #
   # For legacy format, items key is auto-detected (first non-metadata Array value).
   # When nextPage URL is absent, a next_page_fetcher proc set by the Request layer
   # drives pagination by incrementing startAt.
   class PaginatedResponse
     include Logging
+    include Pagination::CollectionBehavior
 
     METADATA_KEYS = %i[
       isLast maxResults nextPage self startAt total pageSize nextPageToken expand warningMessages
@@ -37,45 +38,6 @@ module Jira
       @total = body.fetch(:total, 0).to_i
     end
 
-    def inspect
-      @array.inspect
-    end
-
-    def method_missing(name, *, &)
-      return @array.send(name, *, &) if @array.respond_to?(name)
-
-      super
-    end
-
-    def respond_to_missing?(method_name, include_private = false)
-      super || @array.respond_to?(method_name, include_private)
-    end
-
-    def each_page
-      current = self
-      yield current
-      while current.has_next_page?
-        current = current.next_page
-        yield current
-      end
-    end
-
-    def lazy_paginate
-      to_enum(:each_page).lazy.flat_map(&:to_ary)
-    end
-
-    def auto_paginate(&block)
-      return lazy_paginate.to_a unless block
-
-      lazy_paginate.each(&block)
-    end
-
-    def paginate_with_limit(limit, &block)
-      return lazy_paginate.take(limit).to_a unless block
-
-      lazy_paginate.take(limit).each(&block)
-    end
-
     def last_page?
       @is_last == true
     end
@@ -93,9 +55,14 @@ module Jira
 
     def next_page
       return nil unless next_page?
-      return @client.get(client_relative_path(@next_page)) unless @next_page.to_s.empty?
+      return next_page_by_link unless @next_page.to_s.empty?
+      raise Error::MissingCredentials, "next_page_fetcher not set on PaginatedResponse" unless @next_page_fetcher
 
       @next_page_fetcher.call(@start_at + @max_results)
+    end
+
+    def pagination_progress_marker
+      [@start_at, @next_page.to_s]
     end
 
     def client_relative_path(link)
@@ -104,6 +71,12 @@ module Jira
     end
 
     private
+
+    def next_page_by_link
+      raise Error::MissingCredentials, "client not set on PaginatedResponse" unless @client
+
+      @client.get(client_relative_path(@next_page))
+    end
 
     def detect_items(body)
       return [:values, body[:values]] if body.key?(:values)

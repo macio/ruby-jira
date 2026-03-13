@@ -11,6 +11,9 @@ module Jira
     # Raised when impossible to parse response body.
     class Parsing < Base; end
 
+    # Raised when pagination cannot continue safely.
+    class Pagination < Base; end
+
     # Custom error class for rescuing from HTTP response errors.
     class ResponseError < Base
       POSSIBLE_MESSAGE_KEYS = %i[message error_description error].freeze
