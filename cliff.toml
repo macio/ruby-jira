@@ -35,6 +35,10 @@ footer = """
 conventional_commits = true
 filter_unconventional = true
 split_commits = false
+commit_preprocessors = [
+  { pattern = "^Feat/(.+)", replace = "feat: $1" },
+  { pattern = "^Add (.+)", replace = "feat: add $1" },
+]
 commit_parsers = [
   { message = "^feat", group = "Added" },
   { message = "^fix", group = "Fixed" },

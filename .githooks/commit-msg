@@ -1,0 +1,24 @@
+#!/bin/bash
+# Validates commit message follows Conventional Commits format.
+# https://www.conventionalcommits.org/
+
+commit_msg=$(cat "$1")
+pattern="^(feat|fix|perf|refactor|docs|test|chore|ci)(\(.+\))?!?: .+"
+
+if echo "$commit_msg" | grep -qE "^Merge "; then
+  exit 0
+fi
+
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+  echo ""
+  echo "ERROR: Commit message does not follow Conventional Commits format."
+  echo ""
+  echo "  Expected:  <type>(<scope>): <description>"
+  echo "  Example:   feat(projects): add get_project method"
+  echo ""
+  echo "  Types: feat, fix, perf, refactor, docs, test, chore, ci"
+  echo ""
+  echo "  Your message: $commit_msg"
+  echo ""
+  exit 1
+fi
