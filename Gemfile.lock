@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-jira (0.1.0)
+    ruby-jira (0.2.0)
       httparty (~> 0.24)
 
 GEM
