@@ -1,0 +1,24 @@
+{
+  "isLast": false,
+  "maxResults": 2,
+  "startAt": 1,
+  "total": 5,
+  "values": [
+    {
+      "boardId": 1,
+      "description": "Issues of type bug",
+      "id": 1,
+      "jql": "issueType = bug",
+      "name": "Bugs",
+      "position": 0
+    },
+    {
+      "boardId": 1,
+      "description": "Issues of type task",
+      "id": 2,
+      "jql": "issueType = task",
+      "name": "Tasks",
+      "position": 0
+    }
+  ]
+}

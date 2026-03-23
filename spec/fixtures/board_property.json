@@ -1,0 +1,6 @@
+{
+  "key": "issue.support",
+  "value": {
+    "system": "https://your-domain.atlassian.net/rest/agile/1.0/board/1/properties/issue.support"
+  }
+}

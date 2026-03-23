@@ -1,0 +1,16 @@
+{
+  "id": 84,
+  "location": {
+    "displayName": "Example Project",
+    "name": "Example Project",
+    "projectId": 10040,
+    "projectKey": "Example Project Key",
+    "projectName": "Example Project",
+    "projectTypeKey": "KEY",
+    "userAccountId": "5b10a2844c20165700ede21g",
+    "userId": 10040
+  },
+  "name": "scrum board",
+  "self": "https://your-domain.atlassian.net/rest/agile/1.0/board/84",
+  "type": "scrum"
+}

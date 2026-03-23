@@ -1,0 +1,27 @@
+{
+  "isLast": false,
+  "maxResults": 2,
+  "startAt": 1,
+  "total": 5,
+  "values": [
+    {
+      "archived": false,
+      "description": "A first version",
+      "id": 10000,
+      "name": "Version 1",
+      "projectId": 10000,
+      "releaseDate": "2015-04-20T01:02:00.000+10:00",
+      "released": true,
+      "self": "https://your-domain.atlassian.net/version/10000"
+    },
+    {
+      "archived": false,
+      "description": "Minor Bugfix version",
+      "id": 10010,
+      "name": "Next Version",
+      "projectId": 10000,
+      "released": false,
+      "self": "https://your-domain.atlassian.net/version/10010"
+    }
+  ]
+}

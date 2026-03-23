@@ -1,0 +1,16 @@
+{
+  "features": [
+    {
+      "boardFeature": "BACKLOG",
+      "boardId": 84,
+      "featureId": "backlog",
+      "featureType": "BASIC",
+      "imageUri": "https://your-domain.atlassian.net/images/feature-backlog.png",
+      "learnMoreLink": "https://support.atlassian.com/jira-software-cloud/",
+      "localisedDescription": "Plan, prioritize and estimate work in the backlog.",
+      "localisedName": "Backlog",
+      "state": "ENABLED",
+      "toggleLocked": false
+    }
+  ]
+}
