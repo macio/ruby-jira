@@ -68,7 +68,7 @@ puts "total boards: #{boards_page.total}"
 boards_page.each { |b| puts "  [#{b[:id]}] #{b[:name]} (#{b[:type]})" }
 
 # Pick board by name or fall back to the first one
-board_name = ENV["JIRA_BOARD_NAME"]
+board_name = ENV.fetch("JIRA_BOARD_NAME", nil)
 board = if board_name
           all = boards_page.auto_paginate
           all.find { |b| b[:name] == board_name } || raise("Board '#{board_name}' not found")
@@ -83,7 +83,7 @@ puts "\nUsing board: [#{board[:id]}] #{board[:name]}"
 section "Agile API - board configuration"
 config = Jira.board_configuration(board[:id])
 puts "name: #{config[:name]}"
-puts "columns: #{config[:columnConfig][:columns].map { |c| c[:name] }.join(', ')}"
+puts "columns: #{config[:columnConfig][:columns].map { |c| c[:name] }.join(", ")}"
 
 section "Agile API - board features"
 features = Jira.board_features(board[:id])
