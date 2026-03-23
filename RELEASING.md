@@ -57,8 +57,8 @@ git status  # must be clean
 
 # 2. Bump the version in lib/jira/version.rb
 #    Follow Semantic Versioning (see below):
-#      bug fix only       → patch: 0.1.0 → 0.1.1
-#      new feature        → minor: 0.1.0 → 0.2.0
+#      bug fix only        → patch: 0.1.0 → 0.1.1
+#      new feature         → minor: 0.1.0 → 0.2.0
 #      breaking API change → major: 0.1.0 → 1.0.0
 #
 #    Edit the file:
