@@ -78,18 +78,18 @@ module Jira
 
     private
 
-    def execute_request(method, path, options)
+    def execute_request(method, path, options, api_path: UrlBuilder::PLATFORM_API_PATH)
       params = params_builder.build(options)
       retries_left = retries_left_for(params)
       log "#{method.upcase} #{path} #{options.inspect}"
-      result = perform_request_with_retry(method, path, params, retries_left)
+      result = perform_request_with_retry(method, path, params, retries_left, api_path:)
       log "→ #{result.class}"
-      setup_pagination_fetcher!(result, method, path, options)
+      setup_pagination_fetcher!(result, method, path, options, api_path:)
       result
     end
 
-    def perform_request_with_retry(method, path, params, retries_left)
-      response = perform_request(method, path, params)
+    def perform_request_with_retry(method, path, params, retries_left, api_path: UrlBuilder::PLATFORM_API_PATH)
+      response = perform_request(method, path, params, api_path:)
       validate(response)
     rescue Jira::Error::TooManyRequests, Jira::Error::ServiceUnavailable => e
       raise e unless should_retry?(e, method, response, retries_left)
@@ -101,24 +101,30 @@ module Jira
       retry
     end
 
-    def setup_pagination_fetcher!(result, method, path, options)
+    def setup_pagination_fetcher!(result, method, path, options, api_path: UrlBuilder::PLATFORM_API_PATH)
       case result
       when PaginatedResponse
-        setup_fetcher_for(result:, method:, path:, options:, key: :startAt)
+        result.next_page_fetcher = next_page_lambda(method:, path:, options:, key: :startAt, api_path:)
       when CursorPaginatedResponse
         return unless result.fetcher_based_pagination?
         return if result.cursor_parameter_key.nil?
 
-        setup_fetcher_for(result:, method:, path:, options:, key: result.cursor_parameter_key)
+        result.next_page_fetcher = next_page_lambda(
+          method:, path:, options:, key: result.cursor_parameter_key, api_path:
+        )
       end
     end
 
-    def setup_fetcher_for(result:, method:, path:, options:, key:)
-      result.next_page_fetcher = lambda do |value|
+    def next_page_lambda(method:, path:, options:, key:, api_path: UrlBuilder::PLATFORM_API_PATH)
+      lambda do |value|
         merged = duplicate_request_options(options)
         inject_pagination_parameter!(options: merged, method:, key:, value:)
-        send(method, path, merged)
+        execute_request(method, path, merged, api_path:)
       end
+    end
+
+    %w[get post put patch delete].each do |m|
+      define_method("agile_#{m}") { |path, opts = {}| execute_request(m, path, opts, api_path: UrlBuilder::AGILE_API_PATH) }
     end
 
     def duplicate_request_options(options)
@@ -140,15 +146,15 @@ module Jira
       :query
     end
 
-    def perform_request(method, path, params)
-      self.class.send(method, build_url(path), params)
+    def perform_request(method, path, params, api_path: UrlBuilder::PLATFORM_API_PATH)
+      self.class.send(method, build_url(path, api_path:), params)
     end
 
     def retries_left_for(params)
       params.delete(:ratelimit_retries) || ratelimit_retries || Configuration::DEFAULT_RATELIMIT_RETRIES
     end
 
-    def build_url(path) = url_builder.build(path)
+    def build_url(path, api_path: UrlBuilder::PLATFORM_API_PATH) = url_builder.build(path, api_path:)
 
     def authorization_header = authenticator.authorization_header
 

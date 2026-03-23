@@ -61,4 +61,25 @@ end
       }
            )
   end
+
+  define_method "stub_agile_#{method}" do |path, fixture, status_code: 200|
+    stub_request(method, "#{Jira.endpoint}/rest/agile/1.0#{path}")
+      .with(headers: {
+        "Accept" => "application/json",
+        "Authorization" => basic_authorization_value,
+        "Content-Type" => "application/json"
+      }
+           )
+      .to_return(body: load_fixture(fixture), status: status_code)
+  end
+
+  define_method "a_agile_#{method}" do |path|
+    a_request(method, "#{Jira.endpoint}/rest/agile/1.0#{path}")
+      .with(headers: {
+        "Accept" => "application/json",
+        "Authorization" => basic_authorization_value,
+        "Content-Type" => "application/json"
+      }
+           )
+  end
 end

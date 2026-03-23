@@ -5,28 +5,29 @@ module Jira
     class UrlBuilder
       OAUTH_API_BASE = "https://api.atlassian.com/ex/jira"
       PLATFORM_API_PATH = "/rest/api/3"
+      AGILE_API_PATH = "/rest/agile/1.0"
 
       def initialize(request:, authenticator:)
         @request = request
         @authenticator = authenticator
       end
 
-      def build(path)
-        "#{api_base_url}#{normalize_path(path)}"
+      def build(path, api_path: PLATFORM_API_PATH)
+        "#{base_url_for(api_path)}#{normalize_path(path)}"
       end
 
       def api_request_path
-        URI.parse(api_base_url).request_uri
+        URI.parse(base_url_for(PLATFORM_API_PATH)).request_uri
       end
 
       private
 
-      def api_base_url
+      def base_url_for(api_path)
         case @authenticator.auth_type
         when :basic
-          "#{normalized_endpoint}#{PLATFORM_API_PATH}"
+          "#{normalized_endpoint}#{api_path}"
         when :oauth2
-          "#{OAUTH_API_BASE}/#{@request.cloud_id}#{PLATFORM_API_PATH}"
+          "#{OAUTH_API_BASE}/#{@request.cloud_id}#{api_path}"
         end
       end
 
