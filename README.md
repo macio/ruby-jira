@@ -1,6 +1,6 @@
 # ruby-jira
 
-Ruby client for the [Jira Cloud REST API v3](https://developer.atlassian.com/cloud/jira/platform/rest/v3/).
+Ruby client for the [Jira Cloud REST API v3](https://developer.atlassian.com/cloud/jira/platform/rest/v3/) and the [Jira Software Cloud REST API](https://developer.atlassian.com/cloud/jira/software/rest/intro/) (agile — sprints, boards).
 
 > Inspired by and based on the architecture of [NARKOZ/gitlab](https://github.com/NARKOZ/gitlab) — a Ruby wrapper for the GitLab API. Many thanks for the solid foundation.
 
@@ -158,6 +158,41 @@ Jira.edit_issue("TEST-1", { fields: { summary: "Silent update" } }, notifyUsers:
 Jira.permission_scheme("TEST")
 Jira.issue_security_level_scheme("TEST")
 Jira.assign_permission_scheme("TEST", scheme_id: 101)
+```
+
+### Sprints (Jira Software Cloud API)
+
+Sprint methods use the Jira Software Cloud REST API (`/rest/agile/1.0`) transparently — no extra configuration needed.
+
+```ruby
+# Get a sprint
+sprint = Jira.sprint(37)
+sprint.name    # => "sprint 1"
+sprint.state   # => "future"
+
+# Create / update / delete
+Jira.create_sprint({ name: "Sprint 5", originBoardId: 5, goal: "ship it" })
+Jira.update_sprint(37, { name: "Sprint 5 — revised" })   # partial update (POST)
+Jira.replace_sprint(37, { name: "Sprint 5", originBoardId: 5, state: "active" })  # full update (PUT)
+Jira.delete_sprint(37)
+
+# Issues in a sprint (offset-paginated)
+issues = Jira.sprint_issues(37, maxResults: 50)
+issues.total
+issues.auto_paginate
+issues.map { |i| i[:key] }
+
+# Move issues into a sprint
+Jira.move_issues_to_sprint(37, issues: ["TEST-1", "TEST-2"])
+
+# Swap sprint position with another sprint
+Jira.swap_sprint(37, sprint_to_swap_with: 42)
+
+# Sprint properties
+Jira.sprint_property_keys(37)
+Jira.sprint_property(37, "my.key")
+Jira.set_sprint_property(37, "my.key", { foo: "bar" })
+Jira.delete_sprint_property(37, "my.key")
 ```
 
 ### Pagination

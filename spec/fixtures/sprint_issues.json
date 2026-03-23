@@ -1,0 +1,26 @@
+{
+  "expand": "names,schema",
+  "startAt": 0,
+  "maxResults": 50,
+  "total": 1,
+  "isLast": true,
+  "issues": [
+    {
+      "id": "10001",
+      "key": "HSP-1",
+      "self": "https://your-domain.atlassian.net/rest/agile/1.0/board/92/issue/10001",
+      "fields": {
+        "flagged": true,
+        "sprint": {
+          "id": 37,
+          "self": "https://your-domain.atlassian.net/rest/agile/1.0/sprint/13",
+          "state": "future",
+          "name": "sprint 2",
+          "goal": "sprint 2 goal"
+        },
+        "description": "example bug report",
+        "updated": 1
+      }
+    }
+  ]
+}
