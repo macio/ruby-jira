@@ -46,6 +46,9 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Max: 135
 
+Metrics/ModuleLength:
+  Max: 210
+
 RSpec/ExampleLength:
   Max: 20
 

@@ -1,0 +1,8 @@
+{
+  "boardId": 1,
+  "description": "Issues of type bug",
+  "id": 1,
+  "jql": "issueType = bug",
+  "name": "Bugs",
+  "position": 0
+}

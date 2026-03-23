@@ -1,0 +1,27 @@
+{
+  "isLast": true,
+  "maxResults": 10,
+  "startAt": 0,
+  "total": 2,
+  "values": [
+    {
+      "avatarUrls": {
+        "16x16": "secure/projectavatar?size=xsmall&pid=10000",
+        "24x24": "secure/projectavatar?size=small&pid=10000",
+        "32x32": "secure/projectavatar?size=medium&pid=10000",
+        "48x48": "secure/projectavatar?size=large&pid=10000"
+      },
+      "id": "10000",
+      "key": "EX",
+      "name": "Example",
+      "projectCategory": {
+        "description": "Project category description",
+        "id": "10000",
+        "name": "A project category"
+      },
+      "projectTypeKey": "ProjectTypeKey{key='software'}",
+      "self": "project/EX",
+      "simplified": false
+    }
+  ]
+}
