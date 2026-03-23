@@ -160,6 +160,68 @@ Jira.issue_security_level_scheme("TEST")
 Jira.assign_permission_scheme("TEST", scheme_id: 101)
 ```
 
+### Boards (Jira Software Cloud API)
+
+Board methods use the Jira Software Cloud REST API (`/rest/agile/1.0`) transparently - no extra configuration needed.
+
+```ruby
+# List all boards (offset-paginated)
+boards = Jira.boards(type: "scrum", maxResults: 50)
+boards.total
+boards.first[:name]   # => "scrum board"
+boards.auto_paginate
+
+# Boards for a filter
+Jira.boards_for_filter(1001)
+
+# Get / create / delete a board
+board = Jira.board(84)
+board.name      # => "scrum board"
+board.type      # => "scrum"
+Jira.create_board({ name: "New Board", type: "scrum", filterId: 1001 })
+Jira.delete_board(84)
+
+# Board configuration
+config = Jira.board_configuration(84)
+config[:columnConfig][:columns].map { |c| c[:name] }   # => ["To Do", "In Progress", "Done"]
+
+# Features (enable/disable board panels)
+Jira.board_features(84)
+Jira.toggle_board_feature(84, { feature: "BACKLOG", state: "ENABLED" })
+
+# Backlog and issues
+Jira.board_backlog(84, maxResults: 50)
+Jira.board_issues(84, jql: "assignee = currentUser()")
+Jira.move_issues_to_board(84, issues: ["TEST-1", "TEST-2"])
+
+# Epics
+Jira.board_epics(84, done: false)
+Jira.board_issues_without_epic(84)
+Jira.board_epic_issues(84, 37)
+
+# Sprints
+sprints = Jira.board_sprints(84, state: "active")
+Jira.board_sprint_issues(84, 37)
+
+# Projects and versions
+Jira.board_projects(84)
+Jira.board_projects_full(84)
+Jira.board_versions(84, released: false)
+
+# Quick filters
+Jira.board_quick_filters(84)
+Jira.board_quick_filter(84, 1)
+
+# Reports
+Jira.board_reports(84)
+
+# Board properties
+Jira.board_property_keys(84)
+Jira.board_property(84, "my.key")
+Jira.set_board_property(84, "my.key", { foo: "bar" })
+Jira.delete_board_property(84, "my.key")
+```
+
 ### Sprints (Jira Software Cloud API)
 
 Sprint methods use the Jira Software Cloud REST API (`/rest/agile/1.0`) transparently — no extra configuration needed.
