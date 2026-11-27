@@ -146,4 +146,18 @@ RSpec.describe Jira::Error::ResponseError do
       expect(described_class.new(response_without_error_code).error_code).to eq ""
     end
   end
+
+  describe "Gone (HTTP 410)" do
+    let(:gone_response) do
+      FakeResponse.new(code: 410, parsed_response: { errorMessages: ["removed"] }, request: request_double, body: "")
+    end
+
+    it "is mapped from status 410" do
+      expect(Jira::Error.klass(gone_response)).to eq(Jira::Error::Gone)
+    end
+
+    it "points the user to search_issues_jql" do
+      expect(Jira::Error::Gone.new(gone_response).message).to include("search_issues_jql")
+    end
+  end
 end

@@ -156,6 +156,17 @@ module Jira
     # Raised when API endpoint returns the HTTP status code 404.
     class NotFound < ResponseError; end
 
+    # Raised when API endpoint returns the HTTP status code 410 (the endpoint has been removed).
+    class Gone < ResponseError
+      MIGRATION_HINT = "This endpoint was removed by Atlassian. For JQL search use search_issues_jql (GET /search/jql)."
+
+      private
+
+      def build_error_message
+        "#{super} #{MIGRATION_HINT}"
+      end
+    end
+
     # Raised when API endpoint returns the HTTP status code 405.
     class MethodNotAllowed < ResponseError; end
 
@@ -188,6 +199,7 @@ module Jira
       401 => Unauthorized,
       403 => Forbidden,
       404 => NotFound,
+      410 => Gone,
       405 => MethodNotAllowed,
       406 => NotAcceptable,
       409 => Conflict,

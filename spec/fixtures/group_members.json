@@ -1,0 +1,15 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/group/member?groupname=jira-developers",
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 1,
+  "isLast": true,
+  "values": [
+    {
+      "accountId": "5b10ac8d82e05b22cc7d4ef5",
+      "accountType": "atlassian",
+      "displayName": "Mia Krystof",
+      "active": true
+    }
+  ]
+}

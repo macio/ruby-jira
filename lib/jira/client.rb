@@ -7,11 +7,14 @@ module Jira
     include AgileIssues
     include Attachments
     include AuditRecords
+    include BulkIssues
     include Boards
     include Components
     include Epics
     include Fields
+    include Groups
     include Filters
+    include IssueChangelogs
     include IssueComments
     include IssueLinks
     include IssueSearch
@@ -20,6 +23,7 @@ module Jira
     include Metadata
     include ProjectCategories
     include ProjectPermissionSchemes
+    include ProjectRoles
     include ProjectProperties
     include Projects
     include Screens
