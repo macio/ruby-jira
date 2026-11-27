@@ -1,0 +1,12 @@
+{
+  "timestamp": 1795780000000,
+  "webhookEvent": "jira:issue_created",
+  "issue_event_type_name": "issue_created",
+  "user": { "accountId": "5b10ac8d82e05b22cc7d4ef5", "displayName": "Mia Krystof", "active": true },
+  "issue": {
+    "id": "10001",
+    "key": "ED-1",
+    "self": "https://example.atlassian.net/rest/api/3/issue/10001",
+    "fields": { "summary": "Login fails", "issuetype": { "name": "Bug" } }
+  }
+}
