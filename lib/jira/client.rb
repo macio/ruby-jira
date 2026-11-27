@@ -7,6 +7,7 @@ module Jira
     include AgileIssues
     include Attachments
     include Boards
+    include Components
     include Epics
     include Fields
     include IssueComments
@@ -22,6 +23,7 @@ module Jira
     include Sprints
     include TimeTracking
     include Users
+    include Versions
 
     # Text representation of the client, masking auth secrets.
     #

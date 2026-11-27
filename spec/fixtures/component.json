@@ -1,0 +1,10 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/component/10000",
+  "id": "10000",
+  "name": "Backend",
+  "description": "Server-side code",
+  "assigneeType": "PROJECT_DEFAULT",
+  "isAssigneeTypeValid": false,
+  "project": "TEST",
+  "projectId": 10000
+}
