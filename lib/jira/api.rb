@@ -7,8 +7,7 @@ module Jira
 
     # Creates a new API.
     # @raise [Jira::Error::MissingCredentials]
-    # rubocop:disable Lint/MissingSuper
-    def initialize(options = {})
+    def initialize(options = {}) # rubocop:disable Lint/MissingSuper
       options = Jira.options.merge(options)
       Configuration::VALID_OPTIONS_KEYS.each do |key|
         send("#{key}=", options[key]) if options.key?(key)
@@ -17,6 +16,5 @@ module Jira
       request_defaults
       self.class.headers "User-Agent" => user_agent
     end
-    # rubocop:enable Lint/MissingSuper
   end
 end

@@ -76,7 +76,7 @@ RSpec.describe Jira::Error::ResponseError do
       headers:         headers,
       request:         request_double
     )
-    expect(described_class.new(response_double).send(:build_error_message)).to match(/Retry text/)
+    expect(described_class.new(response_double).send(:build_error_message)).to include("Retry text")
   end
 
   it "builds an error message from parsed json" do
@@ -89,7 +89,7 @@ RSpec.describe Jira::Error::ResponseError do
       headers:         headers,
       request:         request_double
     )
-    expect(described_class.new(response_double).send(:build_error_message)).to match(/Retry hash/)
+    expect(described_class.new(response_double).send(:build_error_message)).to include("Retry hash")
   end
 
   describe "parsing errors" do
@@ -111,7 +111,7 @@ RSpec.describe Jira::Error::ResponseError do
     end
 
     it "builds an error message from text" do
-      expect(described_class.new(response_double).send(:build_error_message)).to match(/Retry text/)
+      expect(described_class.new(response_double).send(:build_error_message)).to include("Retry text")
     end
   end
 
