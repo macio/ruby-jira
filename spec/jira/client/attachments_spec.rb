@@ -23,7 +23,11 @@ RSpec.describe Jira::Client do
           "Authorization" => basic_authorization_value,
           "X-Atlassian-Token" => "no-check"
         }
-             ) { |req| req.headers["Content-Type"].start_with?("multipart/form-data") }
+             ) do |req|
+        req.headers["Content-Type"].start_with?("multipart/form-data") &&
+          req.body.include?(%(name="file"; filename="#{File.basename(file.path)}")) &&
+          req.body.include?("PNGDATA")
+      end
         .to_return(body: load_fixture("add_attachment.json"), status: 200)
 
       result = Jira.add_attachment("ED-1", file.path)
