@@ -1,0 +1,25 @@
+{
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 1,
+  "createMetaIssueType": [
+    {
+      "id": "10001",
+      "name": "Task",
+      "subtask": false,
+      "fields": {
+        "summary": { "fieldId": "summary", "name": "Summary", "required": true, "operations": ["set"] }
+      }
+    }
+  ],
+  "issueTypes": [
+    {
+      "id": "10001",
+      "name": "Task",
+      "subtask": false,
+      "fields": {
+        "summary": { "fieldId": "summary", "name": "Summary", "required": true, "operations": ["set"] }
+      }
+    }
+  ]
+}

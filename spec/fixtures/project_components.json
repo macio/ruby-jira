@@ -1,0 +1,20 @@
+[
+  {
+    "self": "https://example.atlassian.net/rest/api/3/component/10000",
+    "id": "10000",
+    "name": "Backend",
+    "assigneeType": "PROJECT_DEFAULT",
+    "isAssigneeTypeValid": false,
+    "project": "TEST",
+    "projectId": 10000
+  },
+  {
+    "self": "https://example.atlassian.net/rest/api/3/component/10001",
+    "id": "10001",
+    "name": "Frontend",
+    "assigneeType": "UNASSIGNED",
+    "isAssigneeTypeValid": false,
+    "project": "TEST",
+    "projectId": 10000
+  }
+]

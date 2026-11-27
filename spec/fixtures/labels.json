@@ -1,0 +1,8 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/label",
+  "maxResults": 1000,
+  "startAt": 0,
+  "total": 2,
+  "isLast": true,
+  "values": ["backend", "urgent"]
+}

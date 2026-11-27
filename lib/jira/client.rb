@@ -5,18 +5,26 @@ module Jira
     Dir[File.expand_path("client/*.rb", __dir__)].each { |file| require file }
 
     include AgileIssues
+    include Attachments
     include Boards
+    include Components
     include Epics
+    include Fields
+    include Filters
     include IssueComments
+    include IssueLinks
     include IssueSearch
     include Issues
     include IssueWorklogs
+    include Metadata
     include ProjectCategories
     include ProjectPermissionSchemes
     include ProjectProperties
     include Projects
     include Sprints
     include TimeTracking
+    include Users
+    include Versions
 
     # Text representation of the client, masking auth secrets.
     #

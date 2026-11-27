@@ -1,0 +1,20 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/field/search",
+  "nextPage": "https://example.atlassian.net/rest/api/3/field/search?startAt=50",
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 1,
+  "isLast": true,
+  "values": [
+    {
+      "id": "customfield_10001",
+      "key": "customfield_10001",
+      "name": "Story Points",
+      "custom": true,
+      "orderable": true,
+      "navigable": true,
+      "searchable": true,
+      "schema": { "type": "number", "customId": 10001 }
+    }
+  ]
+}
