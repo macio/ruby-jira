@@ -1,9 +1,31 @@
 {
-  "maxResults": 2,
   "startAt": 0,
-  "total": 2,
+  "maxResults": 1,
+  "total": 1,
   "histories": [
-    { "id": "10001", "created": "2026-11-27T10:00:00.000+0100", "items": [{ "field": "status", "fromString": "To Do", "toString": "In Progress" }] },
-    { "id": "10002", "created": "2026-11-27T11:00:00.000+0100", "items": [{ "field": "summary", "fromString": "Old", "toString": "New" }] }
+    {
+      "id": "10294",
+      "author": {
+        "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+        "accountId": "000000:00000000-0000-0000-0000-000000000000",
+        "emailAddress": "test.user@example.com",
+        "displayName": "Test User",
+        "active": true,
+        "timeZone": "Europe/Warsaw",
+        "accountType": "atlassian"
+      },
+      "created": "2026-11-27T14:30:27.810+0100",
+      "items": [
+        {
+          "field": "summary",
+          "fieldtype": "jira",
+          "fieldId": "summary",
+          "from": null,
+          "fromString": "ruby-jira-live-1795786226 changelog",
+          "to": null,
+          "toString": "ruby-jira-live-1795786226 changelog edited"
+        }
+      ]
+    }
   ]
 }

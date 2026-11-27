@@ -2,16 +2,25 @@
 
 require "spec_helper"
 
+# Fixtures are recorded by issue_changelogs_live_spec.rb (rake live):
+#   issue_changelogs_by_ids.json         - response returned by Jira
+#   issue_changelogs_by_ids_request.json - request body Jira accepted
 RSpec.describe Jira::Client do
+  def fixture_json(name)
+    JSON.parse(load_fixture(name).read)
+  end
+
   describe ".issue_changelogs_by_ids" do
-    it "posts the changelog IDs and returns the histories", :aggregate_failures do
+    it "sends the payload Jira accepted and returns the histories", :aggregate_failures do
+      accepted_payload = fixture_json("issue_changelogs_by_ids_request")
+      expected_ids = fixture_json("issue_changelogs_by_ids")["histories"].map { |history| history["id"] }
       stub_post("/issue/ED-1/changelog/list", "issue_changelogs_by_ids")
 
-      result = Jira.issue_changelogs_by_ids("ED-1", [10_001, 10_002])
+      result = Jira.issue_changelogs_by_ids("ED-1", accepted_payload["changelogIds"])
 
-      expect(a_post("/issue/ED-1/changelog/list")).to have_been_made
+      expect(a_post("/issue/ED-1/changelog/list").with(body: accepted_payload)).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.map { |h| h[:id] }).to eq(%w[10001 10002])
+      expect(result.map { |history| history[:id] }).to eq(expected_ids)
     end
   end
 end
