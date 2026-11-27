@@ -17,6 +17,7 @@ module Jira
     include Projects
     include Sprints
     include TimeTracking
+    include Users
 
     # Text representation of the client, masking auth secrets.
     #
