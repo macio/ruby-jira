@@ -1,0 +1,10 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/screens",
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 1,
+  "isLast": true,
+  "values": [
+    { "id": 10000, "name": "Default screen", "description": "Default screen" }
+  ]
+}
