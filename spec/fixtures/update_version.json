@@ -1,0 +1,10 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/version/10001",
+  "id": "10001",
+  "name": "ruby-jira-live-1795787010 version",
+  "archived": false,
+  "released": true,
+  "releaseDate": "2026-01-15",
+  "userReleaseDate": "15/Jan/26",
+  "projectId": 10000
+}
