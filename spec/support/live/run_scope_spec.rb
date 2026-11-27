@@ -62,15 +62,49 @@ RSpec.describe Jira::Live::RunScope do
   end
 
   describe ".sweep_stale!" do
-    it "deletes issues left by earlier runs", :aggregate_failures do
-      page = instance_double(Jira::CursorPaginatedResponse, auto_paginate: [{ key: "TEST-9" }])
-      allow(client).to receive_messages(search_issues_jql: page, delete_issue: nil)
+    let(:page) { instance_double(Jira::CursorPaginatedResponse, auto_paginate: [{ key: "TEST-9" }]) }
+    let(:versions) do
+      [{ id: "1", name: "ruby-jira-live-1699990000 old" }, { id: "2", name: "ruby-jira-live-1699999990 fresh" },
+       { id: "3", name: "1.0" }]
+    end
+    let(:components) { [{ id: "7", name: "ruby-jira-live-1699990000 old" }] }
 
-      described_class.sweep_stale!(client: client)
+    before do
+      allow(client).to receive_messages(
+        search_issues_jql:  page,
+        delete_issue:       nil,
+        project_versions:   versions,
+        delete_version:     nil,
+        project_components: components,
+        delete_component:   nil
+      )
+      described_class.sweep_stale!(client: client, clock: clock)
+    end
 
+    it "deletes labelled issues older than one hour", :aggregate_failures do
       expect(client).to have_received(:search_issues_jql)
         .with(jql: a_string_including('labels = "ruby-jira-live"', "created <= -1h"), fields: "key")
       expect(client).to have_received(:delete_issue).with("TEST-9")
+    end
+
+    it "deletes only prefixed versions and components older than one hour", :aggregate_failures do
+      expect(client).to have_received(:delete_version).with("1").once
+      expect(client).not_to have_received(:delete_version).with("2")
+      expect(client).not_to have_received(:delete_version).with("3")
+      expect(client).to have_received(:delete_component).with("7")
+    end
+  end
+
+  describe "#on_cleanup" do
+    it "runs registered cleanups before deleting issues, collecting failures", :aggregate_failures do
+      calls = []
+      allow(client).to receive(:delete_issue) { |key| calls << key }
+      scope.track_issue("TEST-1")
+      scope.on_cleanup("version 1") { calls << "version 1" }
+      scope.on_cleanup("component 2") { raise Jira::Error::Parsing, "boom" }
+
+      expect { scope.cleanup! }.to raise_error(described_class::CleanupError, /component 2: Jira::Error::Parsing: boom/)
+      expect(calls).to eq(["version 1", "TEST-1"])
     end
   end
 end
