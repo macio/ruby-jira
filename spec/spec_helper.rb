@@ -5,7 +5,7 @@ require "simplecov"
 SimpleCov.start do
   enable_coverage :branch
   skip "/spec/"
-  minimum_coverage line: 88, branch: 60
+  minimum_coverage(line: 88, branch: 60) if ENV["CI"]
 end
 
 require "base64"
