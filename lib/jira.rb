@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "jira/version"
+require_relative "jira/adf"
 require_relative "jira/configuration"
 require_relative "jira/logging"
 require_relative "jira/error"
