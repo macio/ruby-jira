@@ -1,12 +1,47 @@
 [
   {
-    "id": "10000",
-    "name": "To Do",
-    "statusCategory": { "id": 2, "key": "new", "name": "To Do" }
+    "self": "https://example.atlassian.net/rest/api/3/status/3",
+    "description": "This issue is being actively worked on at the moment by the assignee.",
+    "iconUrl": "https://example.atlassian.net/images/icons/statuses/inprogress.png",
+    "name": "In Progress",
+    "untranslatedName": "In Progress",
+    "id": "3",
+    "statusCategory": {
+      "self": "https://example.atlassian.net/rest/api/3/statuscategory/4",
+      "id": 4,
+      "key": "indeterminate",
+      "colorName": "yellow",
+      "name": "In Progress"
+    }
   },
   {
+    "self": "https://example.atlassian.net/rest/api/3/status/10000",
+    "description": "",
+    "iconUrl": "https://example.atlassian.net/",
+    "name": "To Do",
+    "untranslatedName": "To Do",
+    "id": "10000",
+    "statusCategory": {
+      "self": "https://example.atlassian.net/rest/api/3/statuscategory/2",
+      "id": 2,
+      "key": "new",
+      "colorName": "blue-gray",
+      "name": "To Do"
+    }
+  },
+  {
+    "self": "https://example.atlassian.net/rest/api/3/status/10001",
+    "description": "",
+    "iconUrl": "https://example.atlassian.net/",
+    "name": "Done",
+    "untranslatedName": "Done",
     "id": "10001",
-    "name": "In Progress",
-    "statusCategory": { "id": 4, "key": "indeterminate", "name": "In Progress" }
+    "statusCategory": {
+      "self": "https://example.atlassian.net/rest/api/3/statuscategory/3",
+      "id": 3,
+      "key": "done",
+      "colorName": "green",
+      "name": "Done"
+    }
   }
 ]

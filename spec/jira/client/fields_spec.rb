@@ -10,8 +10,8 @@ RSpec.describe Jira::Client do
       result = Jira.fields
 
       expect(a_get("/field")).to have_been_made
-      expect(result.size).to eq(2)
-      expect(result.last[:id]).to eq("customfield_10001")
+      expect(result.size).to eq(fixture_json("fields").size)
+      expect(result.map { |field| field[:id] }).to include("summary")
     end
   end
 
@@ -23,7 +23,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/field/search?type=custom")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.first[:name]).to eq("Story Points")
+      expect(result.first[:id]).to eq(fixture_json("field_search")["values"].first["id"])
     end
   end
 
@@ -31,7 +31,7 @@ RSpec.describe Jira::Client do
     it "returns all issue types" do
       stub_get("/issuetype", "issue_types.json")
 
-      expect(Jira.issue_types.map { |t| t[:name] }).to eq(%w[Task Bug])
+      expect(Jira.issue_types.map { |t| t[:name] }).to eq(fixture_json("issue_types").map { |t| t["name"] })
     end
   end
 
@@ -39,7 +39,7 @@ RSpec.describe Jira::Client do
     it "returns all priorities" do
       stub_get("/priority", "priorities.json")
 
-      expect(Jira.priorities.first[:name]).to eq("Highest")
+      expect(Jira.priorities.first[:name]).to eq(fixture_json("priorities").first["name"])
     end
   end
 
@@ -47,7 +47,8 @@ RSpec.describe Jira::Client do
     it "returns all statuses" do
       stub_get("/status", "statuses.json")
 
-      expect(Jira.statuses.map { |s| s.dig(:statusCategory, :key) }).to eq(%w[new indeterminate])
+      expected = fixture_json("statuses").map { |s| s.dig("statusCategory", "key") }
+      expect(Jira.statuses.map { |s| s.dig(:statusCategory, :key) }).to eq(expected)
     end
   end
 
@@ -55,7 +56,7 @@ RSpec.describe Jira::Client do
     it "returns all resolutions" do
       stub_get("/resolution", "resolutions.json")
 
-      expect(Jira.resolutions.last[:name]).to eq("Won't Do")
+      expect(Jira.resolutions.last[:name]).to eq(fixture_json("resolutions").last["name"])
     end
   end
 
@@ -67,7 +68,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/label?maxResults=1000")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.total).to eq(2)
+      expect(result.total).to eq(fixture_json("labels")["total"])
     end
   end
 end

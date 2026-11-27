@@ -10,8 +10,8 @@ RSpec.describe Jira::Client do
       result = Jira.create_metadata("ED")
 
       expect(a_get("/issue/createmeta/ED/issuetypes")).to have_been_made
-      expect(result.first[:name]).to eq("Task")
-      expect(result.first[:fields][:summary][:required]).to be(true)
+      expected = fixture_json("create_metadata")["issueTypes"].map { |type| type["name"] }
+      expect(result.map { |type| type[:name] }).to eq(expected)
     end
   end
 
@@ -22,8 +22,9 @@ RSpec.describe Jira::Client do
       result = Jira.create_metadata_for_issue_type("ED", 10_001)
 
       expect(a_get("/issue/createmeta/ED/issuetypes/10001")).to have_been_made
-      expect(result.first[:fieldId]).to eq("summary")
-      expect(result.total).to eq(1)
+      fields = fixture_json("create_metadata_for_issue_type")["fields"]
+      expect(result.map { |field| field[:fieldId] }).to eq(fields.map { |f| f["fieldId"] })
+      expect(result.total).to eq(fields.size)
     end
   end
 end
