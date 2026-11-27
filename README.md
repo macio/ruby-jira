@@ -160,6 +160,55 @@ Jira.issue_security_level_scheme("TEST")
 Jira.assign_permission_scheme("TEST", scheme_id: 101)
 ```
 
+### Epics (Jira Software Cloud API)
+
+```ruby
+# Get a single epic
+epic = Jira.epic(37)
+epic.name     # => "epic 1"
+epic.summary  # => "epic 1 summary"
+epic.done     # => false
+
+# Partially update an epic
+Jira.update_epic(37, { name: "New name", done: true })
+
+# Issues in an epic (offset-paginated)
+issues = Jira.epic_issues(37, maxResults: 50)
+issues.total
+issues.auto_paginate
+
+# Issues with no epic assigned
+Jira.issues_without_epic(jql: "project = TEST")
+
+# Move issues to an epic / remove from epic
+Jira.move_issues_to_epic(37, issues: ["TEST-1", "TEST-2"])
+Jira.unassign_issues_from_epic(issues: ["TEST-3"])
+
+# Rank an epic relative to another
+Jira.rank_epic(37, { rankBeforeEpic: 42 })
+```
+
+### Agile Issues (Jira Software Cloud API)
+
+```ruby
+# Get an issue with agile fields (sprint, epic, flagged)
+issue = Jira.agile_issue("TEST-1")
+issue.key                    # => "TEST-1"
+issue.fields.sprint.name     # => "sprint 2"
+issue.fields.epic.name       # => "epic 1"
+issue.fields.flagged         # => true
+
+# Estimation
+est = Jira.issue_estimation("TEST-1", boardId: 84)
+est[:fieldId]   # => "customfield_12532"
+est[:value]     # => "8.0"
+
+Jira.update_issue_estimation("TEST-1", { value: "13.0" }, boardId: 84)
+
+# Rank issues relative to another
+Jira.rank_issues({ issues: ["TEST-1", "TEST-2"], rankBeforeIssue: "TEST-3" })
+```
+
 ### Boards (Jira Software Cloud API)
 
 Board methods use the Jira Software Cloud REST API (`/rest/agile/1.0`) transparently - no extra configuration needed.

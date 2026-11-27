@@ -1,0 +1,10 @@
+{
+  "id": 37,
+  "self": "https://your-domain.atlassian.net/rest/agile/1.0/epic/23",
+  "name": "epic 1",
+  "summary": "epic 1 summary",
+  "color": {
+    "key": "color_4"
+  },
+  "done": true
+}
