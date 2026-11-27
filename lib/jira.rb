@@ -10,6 +10,7 @@ require_relative "jira/pagination/collection_behavior"
 require_relative "jira/pagination/paginated_response"
 require_relative "jira/pagination/cursor_paginated_response"
 require_relative "jira/request"
+require_relative "jira/webhook/event"
 require_relative "jira/api"
 require_relative "jira/client"
 
