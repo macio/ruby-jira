@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-11-27
+
+### Added
+
+- Epic and agile issue endpoints (Jira Software Cloud API) (#12) ([3ad2c31](https://github.com/macio/ruby-jira/commit/3ad2c31))
+- Add board endpoints (Jira Software Cloud API) (#11) ([e62a7cb](https://github.com/macio/ruby-jira/commit/e62a7cb))
+- Add Jira Software Cloud agile API - sprint endpoints (#10) ([a17893d](https://github.com/macio/ruby-jira/commit/a17893d))
+
 ## [0.2.0] - 2026-03-13
 
 ### Added
@@ -25,4 +33,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add initial ruby-jira Jira API client gem ([09c7c53](https://github.com/macio/ruby-jira/commit/09c7c5302cec9ccd079d85f0c46466f53775e9da))
 
+[0.3.0]: https://github.com/macio/ruby-jira/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/macio/ruby-jira/compare/v0.1.0...v0.2.0
