@@ -1,10 +1,45 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/user?accountId=5b10a2844c20165700ede21g",
-  "accountId": "5b10a2844c20165700ede21g",
+  "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+  "accountId": "000000:00000000-0000-0000-0000-000000000000",
   "accountType": "atlassian",
   "emailAddress": "test.user@example.com",
   "displayName": "Test User",
   "active": true,
   "timeZone": "Europe/Warsaw",
-  "locale": "en_US"
+  "locale": "en_US",
+  "groups": {
+    "size": 5,
+    "items": [
+      {
+        "name": "confluence-admins-pinokio",
+        "groupId": "d2342743-e556-4843-9b9c-1f3d405fdf2a",
+        "self": "https://example.atlassian.net/rest/api/3/group?groupId=d2342743-e556-4843-9b9c-1f3d405fdf2a"
+      },
+      {
+        "name": "confluence-users-pinokio",
+        "groupId": "ff0c7020-dec7-4f11-bc20-e6badb3a371a",
+        "self": "https://example.atlassian.net/rest/api/3/group?groupId=ff0c7020-dec7-4f11-bc20-e6badb3a371a"
+      },
+      {
+        "name": "jira-servicemanagement-users-pinokio",
+        "groupId": "8b38e937-e809-4e71-9801-a6019cfef3c3",
+        "self": "https://example.atlassian.net/rest/api/3/group?groupId=8b38e937-e809-4e71-9801-a6019cfef3c3"
+      },
+      {
+        "name": "jira-users-pinokio",
+        "groupId": "deacc505-c1cb-4f59-aff7-2236e3879ee1",
+        "self": "https://example.atlassian.net/rest/api/3/group?groupId=deacc505-c1cb-4f59-aff7-2236e3879ee1"
+      },
+      {
+        "name": "org-admins",
+        "groupId": "b386dc25-b5f2-4352-a32a-0b422557c362",
+        "self": "https://example.atlassian.net/rest/api/3/group?groupId=b386dc25-b5f2-4352-a32a-0b422557c362"
+      }
+    ]
+  },
+  "applicationRoles": {
+    "size": 3,
+    "items": []
+  },
+  "expand": "groups,applicationRoles"
 }
