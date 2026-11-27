@@ -330,7 +330,7 @@ Jira.labels(maxResults: 100)       # paginated; values are strings
 Create-screen metadata shows which fields are required for a new issue:
 
 ```ruby
-# One entry per issue type of the project. Items are the createMetaIssueType entries.
+# One entry per issue type of the project (the issueTypes array of the response)
 Jira.create_metadata("TEST").each { |type| puts type[:name] }
 
 # Field definitions for one issue type
