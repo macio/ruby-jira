@@ -15,6 +15,8 @@ module Jira
       # @return [Array<Hash>]
       def add_attachment(issue_id_or_key, file_path)
         File.open(file_path, "rb") do |file|
+          # Jira blocks multipart uploads without this header (XSRF protection).
+          # Required by the addAttachment operation in the OpenAPI spec.
           post(
             "/issue/#{url_encode(issue_id_or_key)}/attachments",
             body:      { file: file },
