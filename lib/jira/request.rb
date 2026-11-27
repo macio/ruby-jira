@@ -94,9 +94,9 @@ module Jira
     rescue Jira::Error::TooManyRequests, Jira::Error::ServiceUnavailable => e
       raise e unless should_retry?(e, method, response, retries_left)
 
-      wait = retry_policy.wait_seconds(response: response, retries_left: retries_left - 1)
+      wait = retry_policy.wait_seconds(response: response, retries_left: retries_left)
       log "rate limited (HTTP #{response.code}), retrying in #{wait.round(1)}s (#{retries_left - 1} retries left)"
-      retry_policy.sleep_before_retry(response: response, retries_left: retries_left - 1)
+      Kernel.sleep(wait)
       retries_left -= 1
       retry
     end
