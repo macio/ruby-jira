@@ -5,12 +5,13 @@ require "spec_helper"
 RSpec.describe Jira::Client do
   describe ".create_component" do
     it "posts the component payload", :aggregate_failures do
-      stub_post("/component", "component.json", status_code: 201)
+      stub_post("/component", "create_component.json", status_code: 201)
+      payload = fixture_json("create_component_request")
 
-      result = Jira.create_component(name: "Backend", project: "TEST")
+      result = Jira.create_component(payload)
 
-      expect(a_post("/component")).to have_been_made
-      expect(result.name).to eq("Backend")
+      expect(a_post("/component").with(body: payload)).to have_been_made
+      expect(result.name).to eq(fixture_json("create_component")["name"])
     end
   end
 
@@ -18,17 +19,19 @@ RSpec.describe Jira::Client do
     it "returns a component by ID" do
       stub_get("/component/10000", "component.json")
 
-      expect(Jira.component(10_000).project).to eq("TEST")
+      expect(Jira.component(10_000).project).to eq(fixture_json("component")["project"])
     end
   end
 
   describe ".update_component" do
-    it "puts the changed fields to the component" do
-      stub_put("/component/10000", "component.json")
+    it "puts the changed fields to the component", :aggregate_failures do
+      stub_put("/component/10000", "update_component.json")
+      payload = fixture_json("update_component_request")
 
-      Jira.update_component(10_000, description: "Server-side code")
+      result = Jira.update_component(10_000, payload)
 
-      expect(a_put("/component/10000")).to have_been_made
+      expect(a_put("/component/10000").with(body: payload)).to have_been_made
+      expect(result.description).to eq(fixture_json("update_component")["description"])
     end
   end
 
@@ -51,7 +54,7 @@ RSpec.describe Jira::Client do
       result = Jira.project_components("TEST")
 
       expect(a_get("/project/TEST/components")).to have_been_made
-      expect(result.map(&:name)).to eq(%w[Backend Frontend])
+      expect(result.map(&:name)).to eq(fixture_json("project_components").map { |component| component["name"] })
     end
   end
 end
