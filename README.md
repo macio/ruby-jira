@@ -6,7 +6,7 @@ Ruby client for the [Jira Cloud REST API v3](https://developer.atlassian.com/clo
 
 ## Requirements
 
-Ruby **3.2** or newer. Tested on 3.2, 3.3, and 3.4. Ruby 3.1 and older are not supported (EOL).
+Ruby **3.3** or newer. Tested on 3.3 and 3.4. Ruby 3.2 and older are not supported (EOL).
 
 ## Installation
 
