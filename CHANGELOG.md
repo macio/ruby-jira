@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2026-11-27
+
+### Added
+
+- Add Users, Fields, Attachments, Issue links, Versions, Components, Filters and ADF helper (#14) ([c279fd5](https://github.com/macio/ruby-jira/commit/c279fd51fb8a4562685eb1502a474e71ca33fd61))
+
 ## [0.4.0] - 2026-11-27
 
 ### Added
@@ -39,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add initial ruby-jira Jira API client gem ([09c7c53](https://github.com/macio/ruby-jira/commit/09c7c5302cec9ccd079d85f0c46466f53775e9da))
 
+[0.5.0]: https://github.com/macio/ruby-jira/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/macio/ruby-jira/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/macio/ruby-jira/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/macio/ruby-jira/compare/v0.1.0...v0.2.0
