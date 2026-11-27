@@ -4,10 +4,6 @@ require "spec_helper"
 
 # Fixtures are recorded by users_live_spec.rb (rake live); assertions read values from them.
 RSpec.describe Jira::Client do
-  def fixture_json(name)
-    JSON.parse(load_fixture(name).read)
-  end
-
   describe ".myself" do
     it "returns the current user", :aggregate_failures do
       stub_get("/myself", "myself")
