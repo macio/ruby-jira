@@ -7,10 +7,12 @@ module Jira
     include AgileIssues
     include Boards
     include Epics
+    include Fields
     include IssueComments
     include IssueSearch
     include Issues
     include IssueWorklogs
+    include Metadata
     include ProjectCategories
     include ProjectPermissionSchemes
     include ProjectProperties
