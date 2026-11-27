@@ -1,12 +1,8 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/version/10000",
-  "id": "10000",
-  "description": "First release",
-  "name": "1.0",
+  "self": "https://example.atlassian.net/rest/api/3/version/10001",
+  "id": "10001",
+  "name": "ruby-jira-live-1795787010 version",
   "archived": false,
   "released": false,
-  "startDate": "2026-12-01",
-  "releaseDate": "2026-12-31",
-  "overdue": false,
   "projectId": 10000
 }

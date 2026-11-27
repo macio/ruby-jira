@@ -11,22 +11,22 @@
     "size": 5,
     "items": [
       {
-        "name": "confluence-admins-pinokio",
+        "name": "confluence-admins-example",
         "groupId": "d2342743-e556-4843-9b9c-1f3d405fdf2a",
         "self": "https://example.atlassian.net/rest/api/3/group?groupId=d2342743-e556-4843-9b9c-1f3d405fdf2a"
       },
       {
-        "name": "confluence-users-pinokio",
+        "name": "confluence-users-example",
         "groupId": "ff0c7020-dec7-4f11-bc20-e6badb3a371a",
         "self": "https://example.atlassian.net/rest/api/3/group?groupId=ff0c7020-dec7-4f11-bc20-e6badb3a371a"
       },
       {
-        "name": "jira-servicemanagement-users-pinokio",
+        "name": "jira-servicemanagement-users-example",
         "groupId": "8b38e937-e809-4e71-9801-a6019cfef3c3",
         "self": "https://example.atlassian.net/rest/api/3/group?groupId=8b38e937-e809-4e71-9801-a6019cfef3c3"
       },
       {
-        "name": "jira-users-pinokio",
+        "name": "jira-users-example",
         "groupId": "deacc505-c1cb-4f59-aff7-2236e3879ee1",
         "self": "https://example.atlassian.net/rest/api/3/group?groupId=deacc505-c1cb-4f59-aff7-2236e3879ee1"
       },

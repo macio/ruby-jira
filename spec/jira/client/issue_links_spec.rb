@@ -33,8 +33,9 @@ RSpec.describe Jira::Client do
       result = Jira.issue_link(10_000)
 
       expect(a_get("/issueLink/10000")).to have_been_made
-      expect(result[:type][:name]).to eq("Blocks")
-      expect(result.outwardIssue[:key]).to eq("TEST-1")
+      expected = fixture_json("issue_link")
+      expect(result[:type][:name]).to eq(expected["type"]["name"])
+      expect(result.outwardIssue[:key]).to eq(expected["outwardIssue"]["key"])
     end
   end
 
@@ -57,7 +58,8 @@ RSpec.describe Jira::Client do
       result = Jira.issue_link_types
 
       expect(a_get("/issueLinkType")).to have_been_made
-      expect(result[:issueLinkTypes].map { |t| t[:name] }).to eq(%w[Blocks Cloners])
+      expected = fixture_json("issue_link_types")["issueLinkTypes"].map { |type| type["name"] }
+      expect(result[:issueLinkTypes].map { |t| t[:name] }).to eq(expected)
     end
   end
 end

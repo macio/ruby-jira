@@ -7,7 +7,7 @@ RSpec.describe Jira::Client do
     it "returns the role name to URL map" do
       stub_get("/project/TEST/role", "project_roles.json")
 
-      expect(Jira.project_roles("TEST")[:Developers]).to end_with("/role/10001")
+      expect(Jira.project_roles("TEST")[:Administrators]).to eq(fixture_json("project_roles")["Administrators"])
     end
   end
 
@@ -18,8 +18,9 @@ RSpec.describe Jira::Client do
       result = Jira.project_role("TEST", 10_001)
 
       expect(a_get("/project/TEST/role/10001")).to have_been_made
-      expect(result[:name]).to eq("Developers")
-      expect(result[:actors].first[:name]).to eq("jira-developers")
+      expected = fixture_json("project_role")
+      expect(result[:name]).to eq(expected["name"])
+      expect(result[:actors].first[:type]).to eq(expected["actors"].first["type"])
     end
   end
 end

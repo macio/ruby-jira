@@ -11,7 +11,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/workflow/search?maxResults=50")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.first[:isDefault]).to be(true)
+      expect(result.first.dig(:id, :name)).to eq(fixture_json("workflow_search")["values"].first["id"]["name"])
     end
   end
 end

@@ -1,16 +1,21 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/filter/search",
+  "self": "https://example.atlassian.net/rest/api/3/filter/search?maxResults=50&filterName=ruby-jira-live-1795787076%20filter&startAt=0",
   "maxResults": 50,
   "startAt": 0,
-  "total": 1,
+  "total": 2,
   "isLast": true,
   "values": [
     {
+      "expand": "description,owner,jql,viewUrl,searchUrl,favourite,favouritedCount,sharePermissions,editPermissions,isWritable,approximateLastUsed,subscriptions",
       "self": "https://example.atlassian.net/rest/api/3/filter/10000",
       "id": "10000",
-      "name": "My open bugs",
-      "jql": "assignee = currentUser() AND issuetype = Bug AND statusCategory != Done",
-      "favourite": false
+      "name": "Filter for TEST board"
+    },
+    {
+      "expand": "description,owner,jql,viewUrl,searchUrl,favourite,favouritedCount,sharePermissions,editPermissions,isWritable,approximateLastUsed,subscriptions",
+      "self": "https://example.atlassian.net/rest/api/3/filter/10034",
+      "id": "10034",
+      "name": "ruby-jira-live-1795787076 filter"
     }
   ]
 }

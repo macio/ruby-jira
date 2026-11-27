@@ -1,15 +1,50 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/group/member?groupname=jira-developers",
-  "maxResults": 50,
+  "self": "https://example.atlassian.net/rest/api/3/group/member?includeInactiveUsers=false&maxResults=5&groupId=deacc505-c1cb-4f59-aff7-2236e3879ee1&startAt=0",
+  "nextPage": "https://example.atlassian.net/rest/api/3/group/member?includeInactiveUsers=false&maxResults=5&groupId=deacc505-c1cb-4f59-aff7-2236e3879ee1&startAt=5",
+  "maxResults": 5,
   "startAt": 0,
-  "total": 1,
-  "isLast": true,
+  "total": 17,
+  "isLast": false,
   "values": [
     {
-      "accountId": "5b10ac8d82e05b22cc7d4ef5",
-      "accountType": "atlassian",
-      "displayName": "Mia Krystof",
-      "active": true
+      "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+      "accountId": "000000:00000000-0000-0000-0000-000000000000",
+      "displayName": "Test User",
+      "active": true,
+      "timeZone": "Europe/Warsaw",
+      "accountType": "app"
+    },
+    {
+      "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+      "accountId": "000000:00000000-0000-0000-0000-000000000000",
+      "displayName": "Test User",
+      "active": true,
+      "timeZone": "Europe/Warsaw",
+      "accountType": "app"
+    },
+    {
+      "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+      "accountId": "000000:00000000-0000-0000-0000-000000000000",
+      "displayName": "Test User",
+      "active": true,
+      "timeZone": "Europe/Warsaw",
+      "accountType": "app"
+    },
+    {
+      "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+      "accountId": "000000:00000000-0000-0000-0000-000000000000",
+      "displayName": "Test User",
+      "active": true,
+      "timeZone": "Europe/Warsaw",
+      "accountType": "app"
+    },
+    {
+      "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+      "accountId": "000000:00000000-0000-0000-0000-000000000000",
+      "displayName": "Test User",
+      "active": true,
+      "timeZone": "Europe/Warsaw",
+      "accountType": "app"
     }
   ]
 }

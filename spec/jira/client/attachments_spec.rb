@@ -34,7 +34,7 @@ RSpec.describe Jira::Client do
 
       expect(a_request(:post, "#{Jira.endpoint}/rest/api/3/issue/ED-1/attachments")).to have_been_made
       expect(result).to be_an(Array)
-      expect(result.first[:filename]).to eq("screenshot.png")
+      expect(result.first[:filename]).to eq(fixture_json("add_attachment").first["filename"])
     end
   end
 
@@ -42,7 +42,7 @@ RSpec.describe Jira::Client do
     it "returns attachment metadata" do
       stub_get("/attachment/10001", "attachment.json")
 
-      expect(Jira.attachment(10_001)[:mimeType]).to eq("image/png")
+      expect(Jira.attachment(10_001)[:mimeType]).to eq(fixture_json("attachment")["mimeType"])
     end
   end
 

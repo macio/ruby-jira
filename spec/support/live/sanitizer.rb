@@ -16,7 +16,9 @@ module Jira
       FAKE_DISPLAY_NAME = "Test User"
       FAKE_IP = "0.0.0.0"
 
-      ACCOUNT_ID_KEYS = %w[accountId authorAccountId].freeze
+      FAKE_SITE = "example"
+
+      ACCOUNT_ID_KEYS = %w[accountId authorAccountId authorKey].freeze
       VALUE_REPLACEMENTS = {
         "emailAddress" => FAKE_EMAIL,
         "displayName" => FAKE_DISPLAY_NAME,
@@ -30,6 +32,7 @@ module Jira
 
       def initialize(host:, email:)
         @host = host.to_s
+        @site = @host.end_with?(".atlassian.net") ? @host.delete_suffix(".atlassian.net") : ""
         @email = email.to_s
         @account_ids = Set.new
       end
@@ -82,6 +85,7 @@ module Jira
         result = string.dup
         result = result.gsub(@host, FAKE_HOST) unless @host.empty?
         result = result.gsub(@email, FAKE_EMAIL) unless @email.empty?
+        result = result.gsub(@site, FAKE_SITE) unless @site.empty?
         @account_ids.each do |id|
           result = result.gsub(id, FAKE_ACCOUNT_ID).gsub(URI.encode_www_form_component(id), FAKE_ACCOUNT_ID)
         end

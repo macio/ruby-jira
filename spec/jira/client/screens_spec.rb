@@ -11,7 +11,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/screens")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.first[:name]).to eq("Default screen")
+      expect(result.first[:name]).to eq(fixture_json("screens")["values"].first["name"])
     end
   end
 end

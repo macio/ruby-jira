@@ -6,10 +6,6 @@ require "spec_helper"
 #   issue_changelogs_by_ids.json         - response returned by Jira
 #   issue_changelogs_by_ids_request.json - request body Jira accepted
 RSpec.describe Jira::Client do
-  def fixture_json(name)
-    JSON.parse(load_fixture(name).read)
-  end
-
   describe ".issue_changelogs_by_ids" do
     it "sends the payload Jira accepted and returns the histories", :aggregate_failures do
       accepted_payload = fixture_json("issue_changelogs_by_ids_request")

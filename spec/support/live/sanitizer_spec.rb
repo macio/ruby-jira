@@ -14,10 +14,11 @@ RSpec.describe Jira::Live::Sanitizer do
       "avatarUrls" => { "48x48" => "https://avatar" },
       "groups" => {
         "items" => [
-          { "name" => "jira-users", "self" => "https://pinokio.atlassian.net/rest/api/3/group?groupId=1" }
+          { "name" => "jira-users-pinokio", "self" => "https://pinokio.atlassian.net/rest/api/3/group?groupId=1" }
         ]
       },
-      "records" => [{ "authorAccountId" => "other:999", "remoteAddress" => "10.1.2.3" }],
+      "records" => [{ "authorAccountId" => "other:999", "authorKey" => "ug:legacy-key",
+"remoteAddress" => "10.1.2.3" }],
       "description" => "Contact real.person@corp.example"
     }
   end
@@ -28,6 +29,7 @@ RSpec.describe Jira::Live::Sanitizer do
   it "removes the original email, host, account IDs, names and IPs", :aggregate_failures do
     expect(serialized).not_to include("real.person@corp.example", "pinokio.atlassian.net", account_id)
     expect(serialized).not_to include(URI.encode_www_form_component(account_id), "Real Person", "10.1.2.3", "other:999")
+    expect(serialized).not_to include("ug:legacy-key", "pinokio")
   end
 
   it "replaces values with stable placeholders", :aggregate_failures do
@@ -39,7 +41,7 @@ RSpec.describe Jira::Live::Sanitizer do
 
   it "drops avatar URLs and keeps unrelated data", :aggregate_failures do
     expect(result).not_to have_key("avatarUrls")
-    expect(result.dig("groups", "items", 0, "name")).to eq("jira-users")
+    expect(result.dig("groups", "items", 0, "name")).to eq("jira-users-example")
   end
 
   it "accepts a missing host and email" do

@@ -14,7 +14,11 @@ require "webmock/rspec"
 
 def load_fixture(name)
   fixture_name, extension = name.split(".", 2)
-  File.new(File.dirname(__FILE__) + "/fixtures/#{fixture_name}.#{extension || "json"}")
+  File.new(File.dirname(__FILE__) + "/fixtures/#{fixture_name}.#{extension || "json"}", "r:UTF-8")
+end
+
+def fixture_json(name)
+  JSON.parse(load_fixture(name).read)
 end
 
 def basic_authorization_value(email = Jira.email, api_token = Jira.api_token)

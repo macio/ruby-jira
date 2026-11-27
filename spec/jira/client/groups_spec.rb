@@ -5,12 +5,13 @@ require "spec_helper"
 RSpec.describe Jira::Client do
   describe ".group" do
     it "returns a group by name", :aggregate_failures do
-      stub_get("/group?groupname=jira-developers", "group.json")
+      expected = fixture_json("group")
+      stub_get("/group?groupname=#{expected["name"]}", "group.json")
 
-      result = Jira.group("jira-developers")
+      result = Jira.group(expected["name"])
 
-      expect(a_get("/group?groupname=jira-developers")).to have_been_made
-      expect(result.groupId).to eq("abc-123")
+      expect(a_get("/group?groupname=#{expected["name"]}")).to have_been_made
+      expect(result.groupId).to eq(expected["groupId"])
     end
   end
 
@@ -22,7 +23,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/group/member?groupname=jira-developers")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.first[:accountId]).to eq("5b10ac8d82e05b22cc7d4ef5")
+      expect(result.first[:accountId]).to eq(fixture_json("group_members")["values"].first["accountId"])
     end
   end
 

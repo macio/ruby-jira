@@ -1,11 +1,34 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/filter/10000",
-  "id": "10000",
-  "name": "My open bugs",
-  "description": "Open bugs assigned to me",
-  "jql": "assignee = currentUser() AND issuetype = Bug AND statusCategory != Done",
+  "self": "https://example.atlassian.net/rest/api/3/filter/10034",
+  "id": "10034",
+  "name": "ruby-jira-live-1795787076 filter",
+  "owner": {
+    "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+    "accountId": "000000:00000000-0000-0000-0000-000000000000",
+    "displayName": "Test User",
+    "active": true
+  },
+  "jql": "project = TEST ORDER BY created DESC",
+  "viewUrl": "https://example.atlassian.net/issues/?filter=10034",
+  "searchUrl": "https://example.atlassian.net/rest/api/3/search/jql?jql=project%20%3D%20TEST%20ORDER%20BY%20created%20DESC",
   "favourite": false,
   "favouritedCount": 0,
-  "viewUrl": "https://example.atlassian.net/issues/?filter=10000",
-  "searchUrl": "https://example.atlassian.net/rest/api/3/search?jql=assignee+%3D+currentUser%28%29"
+  "sharePermissions": [],
+  "editPermissions": [],
+  "isWritable": true,
+  "sharedUsers": {
+    "size": 0,
+    "items": [],
+    "max-results": 1000,
+    "start-index": 0,
+    "end-index": 0
+  },
+  "subscriptions": {
+    "size": 0,
+    "items": [],
+    "max-results": 1000,
+    "start-index": 0,
+    "end-index": 0
+  },
+  "approximateLastUsed": null
 }
