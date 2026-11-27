@@ -10,7 +10,7 @@ RSpec.describe Jira::Client do
       result = Jira.my_filters(expand: "description")
 
       expect(a_get("/filter/my?expand=description")).to have_been_made
-      expect(result.map(&:name)).to eq(["My open bugs", "Sprint board"])
+      expect(result.map(&:name)).to eq(fixture_json("my_filters").map { |filter| filter["name"] })
     end
   end
 
@@ -21,7 +21,7 @@ RSpec.describe Jira::Client do
       result = Jira.filter(10_000)
 
       expect(a_get("/filter/10000")).to have_been_made
-      expect(result.jql).to include("currentUser()")
+      expect(result.jql).to eq(fixture_json("filter")["jql"])
     end
   end
 
@@ -33,7 +33,7 @@ RSpec.describe Jira::Client do
 
       expect(a_get("/filter/search?filterName=bugs")).to have_been_made
       expect(result).to be_a(Jira::PaginatedResponse)
-      expect(result.first[:id]).to eq("10000")
+      expect(result.first[:id]).to eq(fixture_json("filter_search")["values"].first["id"])
     end
   end
 end
