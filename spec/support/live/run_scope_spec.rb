@@ -13,6 +13,26 @@ RSpec.describe Jira::Live::RunScope do
     expect(scope.prefix).to eq("ruby-jira-live-1700000000")
   end
 
+  describe "#create_issue" do
+    it "creates a labelled issue with the run prefix and tracks it for cleanup", :aggregate_failures do
+      allow(client).to receive_messages(create_issue: { key: "TEST-5" }, delete_issue: nil)
+
+      key = scope.create_issue("changelog")
+      scope.cleanup!
+
+      expect(key).to eq("TEST-5")
+      expect(client).to have_received(:create_issue).with(
+        fields: {
+          project:   { key: "TEST" },
+          issuetype: { name: "Task" },
+          summary:   "ruby-jira-live-1700000000 changelog",
+          labels:    ["ruby-jira-live"]
+        }
+      )
+      expect(client).to have_received(:delete_issue).with("TEST-5")
+    end
+  end
+
   describe "#cleanup!" do
     it "deletes every tracked issue even when one deletion fails", :aggregate_failures do
       allow(client).to receive(:delete_issue)
@@ -49,7 +69,7 @@ RSpec.describe Jira::Live::RunScope do
       described_class.sweep_stale!(client: client)
 
       expect(client).to have_received(:search_issues_jql)
-        .with(jql: a_string_including('summary ~ "ruby-jira-live"', "created <= -1h"), fields: "key")
+        .with(jql: a_string_including('labels = "ruby-jira-live"', "created <= -1h"), fields: "key")
       expect(client).to have_received(:delete_issue).with("TEST-9")
     end
   end
