@@ -1,0 +1,11 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/filter/10000",
+  "id": "10000",
+  "name": "My open bugs",
+  "description": "Open bugs assigned to me",
+  "jql": "assignee = currentUser() AND issuetype = Bug AND statusCategory != Done",
+  "favourite": false,
+  "favouritedCount": 0,
+  "viewUrl": "https://example.atlassian.net/issues/?filter=10000",
+  "searchUrl": "https://example.atlassian.net/rest/api/3/search?jql=assignee+%3D+currentUser%28%29"
+}

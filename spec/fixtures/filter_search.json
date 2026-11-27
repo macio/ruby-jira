@@ -1,0 +1,16 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/filter/search",
+  "maxResults": 50,
+  "startAt": 0,
+  "total": 1,
+  "isLast": true,
+  "values": [
+    {
+      "self": "https://example.atlassian.net/rest/api/3/filter/10000",
+      "id": "10000",
+      "name": "My open bugs",
+      "jql": "assignee = currentUser() AND issuetype = Bug AND statusCategory != Done",
+      "favourite": false
+    }
+  ]
+}
