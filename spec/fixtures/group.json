@@ -1,5 +1,13 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/group?groupId=abc-123",
-  "name": "jira-developers",
-  "groupId": "abc-123"
+  "name": "jira-users-example",
+  "groupId": "deacc505-c1cb-4f59-aff7-2236e3879ee1",
+  "self": "https://example.atlassian.net/rest/api/3/group?groupId=deacc505-c1cb-4f59-aff7-2236e3879ee1",
+  "users": {
+    "size": 17,
+    "items": [],
+    "max-results": 50,
+    "start-index": 0,
+    "end-index": 0
+  },
+  "expand": "users"
 }
