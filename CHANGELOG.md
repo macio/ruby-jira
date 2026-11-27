@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2026-11-27
+
+### Added
+
+- Add parser for Jira issue created and updated webhook deliveries (#20) ([6d55144](https://github.com/macio/ruby-jira/commit/6d55144430f56f4bcec835b612f5eed38ee1523b))
+- Add read-only workflow, screen and audit record endpoints (#19) ([c131307](https://github.com/macio/ruby-jira/commit/c13130780c3818158ee36b850f4a65b429cdd116))
+- Add group and project role endpoints (#18) ([48f30e6](https://github.com/macio/ruby-jira/commit/48f30e6b6f95265bfc1f6a3f8dbe8d2b6126e14e))
+- Add bulk issue delete and changelog lookup by IDs (#17) ([27bc74b](https://github.com/macio/ruby-jira/commit/27bc74b40e8239de969f7306ecc2353e87ddf397))
+
+### Documentation
+
+- Document new endpoints in README and remove filler wording (#23) ([46c3b35](https://github.com/macio/ruby-jira/commit/46c3b3599ae811870f6e405520cdc4e855c598cb))
+- Add webhook sync and attachment migration examples (#21) ([ec23d7d](https://github.com/macio/ruby-jira/commit/ec23d7d45d8a60d90b1b5fd3b50594a9ec1b1bf0))
+- Add release verification, tag and squash-merge pitfalls to RELEASING (#15) ([7dc60d1](https://github.com/macio/ruby-jira/commit/7dc60d14b5185f158e6ccd3bdd90b5da5fe99b91))
+
+### Fixed
+
+- Make rate limit retries match ratelimit_retries; add Gone error for HTTP 410 (#16) ([fb11939](https://github.com/macio/ruby-jira/commit/fb119394bd2220224d2cf8f4e0b52eb53a4e03fa))
+
 ## [0.5.0] - 2026-11-27
 
 ### Added
@@ -45,6 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add initial ruby-jira Jira API client gem ([09c7c53](https://github.com/macio/ruby-jira/commit/09c7c5302cec9ccd079d85f0c46466f53775e9da))
 
+[0.6.0]: https://github.com/macio/ruby-jira/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/macio/ruby-jira/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/macio/ruby-jira/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/macio/ruby-jira/compare/v0.2.0...v0.3.0
