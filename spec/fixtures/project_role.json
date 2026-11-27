@@ -1,0 +1,11 @@
+{
+  "self": "https://example.atlassian.net/rest/api/3/project/10000/role/10001",
+  "name": "Developers",
+  "id": 10001,
+  "description": "A project role that represents developers",
+  "admin": false,
+  "default": false,
+  "actors": [
+    { "id": 10000, "displayName": "jira-developers", "type": "atlassian-group-role-actor", "name": "jira-developers" }
+  ]
+}

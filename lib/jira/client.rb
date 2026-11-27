@@ -10,6 +10,7 @@ module Jira
     include Components
     include Epics
     include Fields
+    include Groups
     include Filters
     include IssueComments
     include IssueLinks
@@ -19,6 +20,7 @@ module Jira
     include Metadata
     include ProjectCategories
     include ProjectPermissionSchemes
+    include ProjectRoles
     include ProjectProperties
     include Projects
     include Sprints
