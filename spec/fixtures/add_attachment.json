@@ -1,16 +1,20 @@
 [
   {
-    "self": "https://example.atlassian.net/rest/api/3/attachment/10001",
-    "id": "10001",
-    "filename": "screenshot.png",
+    "self": "https://example.atlassian.net/rest/api/3/attachment/10037",
+    "id": "10037",
+    "filename": "ruby-jira-live20261127-72250-sj1fjn.txt",
     "author": {
-      "accountId": "5b10ac8d82e05b22cc7d4ef5",
-      "displayName": "Mia Krystof",
-      "active": true
+      "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+      "accountId": "000000:00000000-0000-0000-0000-000000000000",
+      "emailAddress": "test.user@example.com",
+      "displayName": "Test User",
+      "active": true,
+      "timeZone": "Europe/Warsaw",
+      "accountType": "atlassian"
     },
-    "created": "2026-11-27T10:00:00.000+0100",
-    "size": 2048,
-    "mimeType": "image/png",
-    "content": "https://example.atlassian.net/rest/api/3/attachment/content/10001"
+    "created": "2026-11-27T14:42:42.973+0100",
+    "size": 26,
+    "mimeType": "text/plain",
+    "content": "https://example.atlassian.net/rest/api/3/attachment/content/10037"
   }
 ]
