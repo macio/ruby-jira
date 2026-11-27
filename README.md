@@ -441,6 +441,10 @@ e.response_status   # HTTP status code
 e.response_message  # parsed message from response body
 ```
 
+## Testing
+
+Unit specs run offline with `bundle exec rspec`. Live specs run against a Jira test instance with `bundle exec rake live`. See [TESTING.md](TESTING.md) for setup, how to test a new endpoint, and the current limitations.
+
 ## Running the example script
 
 ```bash

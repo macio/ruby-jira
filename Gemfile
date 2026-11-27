@@ -7,6 +7,7 @@ gemspec
 gem "rake", "~> 13.0"
 
 group :development, :test do
+  gem "dotenv", require: false
   gem "rspec", require: false
   gem "rubocop", require: false
   gem "rubocop-performance", require: false

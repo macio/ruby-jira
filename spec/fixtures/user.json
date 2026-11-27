@@ -1,9 +1,19 @@
 {
-  "self": "https://example.atlassian.net/rest/api/3/user?accountId=5b10ac8d82e05b22cc7d4ef5",
-  "accountId": "5b10ac8d82e05b22cc7d4ef5",
+  "self": "https://example.atlassian.net/rest/api/3/user?accountId=000000:00000000-0000-0000-0000-000000000000",
+  "accountId": "000000:00000000-0000-0000-0000-000000000000",
   "accountType": "atlassian",
-  "displayName": "Mia Krystof",
+  "emailAddress": "test.user@example.com",
+  "displayName": "Test User",
   "active": true,
-  "timeZone": "Australia/Sydney",
-  "locale": "en_US"
+  "timeZone": "Europe/Warsaw",
+  "locale": "en_US",
+  "groups": {
+    "size": 5,
+    "items": []
+  },
+  "applicationRoles": {
+    "size": 3,
+    "items": []
+  },
+  "expand": "groups,applicationRoles"
 }
