@@ -28,12 +28,8 @@ module Jira
         @rand_proc = rand_proc
       end
 
-      def sleep_before_retry(response:, retries_left:)
-        sleep(wait_seconds(response: response, retries_left: retries_left))
-      end
-
       def retryable?(error:, method:, response:, retries_left:)
-        return false if retries_left <= 1
+        return false if retries_left <= 0
         return false unless IDEMPOTENT_HTTP_METHODS.include?(method.to_s)
         return true if error.is_a?(Jira::Error::TooManyRequests)
 

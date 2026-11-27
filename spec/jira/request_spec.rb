@@ -276,7 +276,7 @@ RSpec.describe Jira::Request do
       request.instance_variable_set(:@retry_policy, sleeping_policy)
       allow(sleeping_policy).to receive(:retryable?).and_return(true, true, false)
       allow(sleeping_policy).to receive(:wait_seconds).and_return(0)
-      allow(sleeping_policy).to receive(:sleep_before_retry)
+      allow(Kernel).to receive(:sleep)
     end
 
     it "retries idempotent requests on 429 with Retry-After seconds" do
@@ -284,7 +284,7 @@ RSpec.describe Jira::Request do
 
       expect { request.get("/project/TEST") }.to raise_error(Jira::Error::TooManyRequests)
       expect(a_request(:get, path)).to have_been_made.times(3)
-      expect(sleeping_policy).to have_received(:sleep_before_retry).twice
+      expect(Kernel).to have_received(:sleep).twice
     end
 
     it "retries on 429 with X-RateLimit-Reset as ISO 8601 timestamp" do
@@ -293,7 +293,7 @@ RSpec.describe Jira::Request do
 
       expect { request.get("/project/TEST") }.to raise_error(Jira::Error::TooManyRequests)
       expect(a_request(:get, path)).to have_been_made.times(3)
-      expect(sleeping_policy).to have_received(:sleep_before_retry).twice
+      expect(Kernel).to have_received(:sleep).twice
     end
 
     it "retries on 503 with X-RateLimit-Reset as integer seconds" do
@@ -301,7 +301,7 @@ RSpec.describe Jira::Request do
 
       expect { request.get("/project/TEST") }.to raise_error(Jira::Error::ServiceUnavailable)
       expect(a_request(:get, path)).to have_been_made.times(3)
-      expect(sleeping_policy).to have_received(:sleep_before_retry).twice
+      expect(Kernel).to have_received(:sleep).twice
     end
 
     it "does not retry non-idempotent requests on 429" do
@@ -310,7 +310,7 @@ RSpec.describe Jira::Request do
 
       expect { request.post("/issue", body: { fields: { summary: "A" } }) }.to raise_error(Jira::Error::TooManyRequests)
       expect(a_request(:post, "https://jira.atlassian.net/rest/api/3/issue")).to have_been_made.once
-      expect(sleeping_policy).not_to have_received(:sleep_before_retry)
+      expect(Kernel).not_to have_received(:sleep)
     end
 
     it "does not retry 503 without rate-limit headers" do
@@ -319,11 +319,11 @@ RSpec.describe Jira::Request do
 
       expect { request.get("/project/TEST") }.to raise_error(Jira::Error::ServiceUnavailable)
       expect(a_request(:get, path)).to have_been_made.once
-      expect(sleeping_policy).not_to have_received(:sleep_before_retry)
+      expect(Kernel).not_to have_received(:sleep)
     end
 
     it "falls back to exponential backoff with proportional jitter" do
-      # retries=2, base_delay=1.0, retry_attempt=1 => backoff=2.0, jitter=1.0 => sleep(2.0)
+      # retries=2, base_delay=1.0, first retry (attempt 0) => backoff=1.0, jitter=1.0 => sleep(1.0)
       request.ratelimit_retries = 2
       fixed_rand = ->(_range) { 1.0 }
       real_policy = Jira::Request::RetryPolicy.new(request: request, rand_proc: fixed_rand)
@@ -336,16 +336,14 @@ RSpec.describe Jira::Request do
       end
 
       slept_values = []
-      allow(spy_policy).to receive(:sleep_before_retry) do |response:, retries_left:|
-        slept_values << real_policy.wait_seconds(response: response, retries_left: retries_left)
-      end
+      allow(Kernel).to receive(:sleep) { |value| slept_values << value }
 
       request.instance_variable_set(:@retry_policy, spy_policy)
 
       stub_request(:get, path).to_return(status: 429, body: "{}")
 
       expect { request.get("/project/TEST") }.to raise_error(Jira::Error::TooManyRequests)
-      expect(slept_values).to include(be_within(0.001).of(2.0))
+      expect(slept_values).to match([be_within(0.001).of(1.0), be_within(0.001).of(2.0)])
     end
 
     it "respects max_delay cap on backoff" do
@@ -363,17 +361,26 @@ RSpec.describe Jira::Request do
       allow(spy_policy).to receive(:wait_seconds) do |**kwargs|
         real_policy.wait_seconds(**kwargs)
       end
-      allow(spy_policy).to receive(:sleep_before_retry) do |response:, retries_left:|
-        slept_values << real_policy.wait_seconds(response: response, retries_left: retries_left)
-      end
+      allow(Kernel).to receive(:sleep) { |value| slept_values << value }
 
       request.instance_variable_set(:@retry_policy, spy_policy)
 
       stub_request(:get, path).to_return(status: 429, body: "{}")
 
       expect { request.get("/project/TEST") }.to raise_error(Jira::Error::TooManyRequests)
-      # first retry: backoff=2.0*1.3=2.6; second retry: backoff capped at 3.0, jitter 3.0*1.3=3.9 also capped => 3.0
+      # attempts: 1.0*1.3, 2.0*1.3, then 4.0 capped at 3.0 and jittered to 3.9, capped at 3.0
       expect(slept_values).to include(be_within(0.001).of(3.0))
+    end
+
+    it "makes ratelimit_retries + 1 requests in total and sleeps once per retry" do
+      request.ratelimit_retries = 2
+      request.instance_variable_set(:@retry_policy, Jira::Request::RetryPolicy.new(request: request))
+      allow(Kernel).to receive(:sleep)
+      stub_request(:get, path).to_return(status: 429, headers: { "Retry-After" => "1" }, body: "{}")
+
+      expect { request.get("/project/TEST") }.to raise_error(Jira::Error::TooManyRequests)
+      expect(a_request(:get, path)).to have_been_made.times(3)
+      expect(Kernel).to have_received(:sleep).with(1.0).twice
     end
   end
 end
