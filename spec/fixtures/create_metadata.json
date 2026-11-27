@@ -2,15 +2,24 @@
   "maxResults": 50,
   "startAt": 0,
   "total": 1,
-  "isLast": true,
-  "values": [
+  "createMetaIssueType": [
     {
-      "fieldId": "summary",
-      "name": "Summary",
-      "required": true,
-      "hasDefaultValue": false,
-      "operations": ["set"],
-      "schema": { "type": "string", "system": "summary" }
+      "id": "10001",
+      "name": "Task",
+      "subtask": false,
+      "fields": {
+        "summary": { "fieldId": "summary", "name": "Summary", "required": true, "operations": ["set"] }
+      }
+    }
+  ],
+  "issueTypes": [
+    {
+      "id": "10001",
+      "name": "Task",
+      "subtask": false,
+      "fields": {
+        "summary": { "fieldId": "summary", "name": "Summary", "required": true, "operations": ["set"] }
+      }
     }
   ]
 }
