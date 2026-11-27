@@ -6,6 +6,7 @@ module Jira
 
     include AgileIssues
     include Attachments
+    include AuditRecords
     include BulkIssues
     include Boards
     include Components
@@ -25,9 +26,11 @@ module Jira
     include ProjectRoles
     include ProjectProperties
     include Projects
+    include Screens
     include Sprints
     include TimeTracking
     include Users
+    include Workflows
     include Versions
 
     # Text representation of the client, masking auth secrets.

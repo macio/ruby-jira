@@ -1,0 +1,15 @@
+{
+  "offset": 0,
+  "limit": 1000,
+  "total": 1,
+  "records": [
+    {
+      "id": 1,
+      "summary": "User created",
+      "category": "user management",
+      "eventSource": "Jira Cloud",
+      "created": "2026-11-27T10:00:00.000+0100",
+      "objectItem": { "id": "5b10ac8d82e05b22cc7d4ef5", "name": "Mia Krystof", "typeName": "USER" }
+    }
+  ]
+}
