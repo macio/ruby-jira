@@ -72,6 +72,7 @@ RSpec.describe Jira::Client do
       all = Jira.search_issues_jql.auto_paginate
 
       expect(all.length).to eq(2)
+      expect(all.map { |issue| issue[:id] }.uniq.length).to eq(all.length)
     end
   end
 
