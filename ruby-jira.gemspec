@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "A Ruby wrapper for Jira Cloud API"
   spec.homepage = "https://github.com/macio/ruby-jira"
   spec.license = "BSD-2-Clause"
-  spec.required_ruby_version = ">= 3.2.0"
+  spec.required_ruby_version = ">= 3.3.0"
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
