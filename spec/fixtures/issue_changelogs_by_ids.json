@@ -1,0 +1,9 @@
+{
+  "maxResults": 2,
+  "startAt": 0,
+  "total": 2,
+  "histories": [
+    { "id": "10001", "created": "2026-11-27T10:00:00.000+0100", "items": [{ "field": "status", "fromString": "To Do", "toString": "In Progress" }] },
+    { "id": "10002", "created": "2026-11-27T11:00:00.000+0100", "items": [{ "field": "summary", "fromString": "Old", "toString": "New" }] }
+  ]
+}

@@ -6,11 +6,13 @@ module Jira
 
     include AgileIssues
     include Attachments
+    include BulkIssues
     include Boards
     include Components
     include Epics
     include Fields
     include Filters
+    include IssueChangelogs
     include IssueComments
     include IssueLinks
     include IssueSearch
