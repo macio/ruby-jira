@@ -1,4 +1,8 @@
 {
+  "atlassian-addons-project-access": "https://example.atlassian.net/rest/api/3/project/10000/role/10003",
+  "Service Desk Team": "https://example.atlassian.net/rest/api/3/project/10000/role/10005",
+  "jira-guest-member": "https://example.atlassian.net/rest/api/3/project/10000/role/10038",
+  "Service Desk Customers": "https://example.atlassian.net/rest/api/3/project/10000/role/10004",
   "Administrators": "https://example.atlassian.net/rest/api/3/project/10000/role/10002",
-  "Developers": "https://example.atlassian.net/rest/api/3/project/10000/role/10001"
+  "atlassian-member-role": "https://example.atlassian.net/rest/api/3/project/10000/role/10071"
 }
