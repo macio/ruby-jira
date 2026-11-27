@@ -10,6 +10,7 @@ module Jira
     include Epics
     include Fields
     include IssueComments
+    include IssueLinks
     include IssueSearch
     include Issues
     include IssueWorklogs
